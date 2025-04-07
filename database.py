@@ -66,5 +66,5 @@ class DataBase(DataBaseConnection):
         with DataBaseConnection() as db:
             db.cursor.execute(
                 "INSERT INTO event (user_id, name, description, date, location) VALUES (%s, %s, %s, %s, %s)",
-                (current_user.id, name, description, date, location),
+                (current_user.id, name, description, date, location)
             )

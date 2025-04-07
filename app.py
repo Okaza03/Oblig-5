@@ -43,7 +43,7 @@ def my_events():
     )
 
 
-@login_required
+
 @app.route("/create-event", methods=["GET", "POST"])
 def create_event():
     if request.method == "POST":
@@ -52,7 +52,7 @@ def create_event():
         date = request.form.get("date")
         location = request.form.get("location")
 
-        with DataBase as db:
+        with DataBase(Event) as db:
             db.create_event(name, description, date, location)
         return redirect(url_for("event.my_events"))
 
