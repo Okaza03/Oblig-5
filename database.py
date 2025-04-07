@@ -24,3 +24,5 @@ class DataBase(DataBaseConnection):
         return [self.model(*r) for r in data] if data else None
 
     
+    def create_event(self):
+        return
