@@ -33,7 +33,7 @@ class DataBase(DataBaseConnection):
             db.cursor.execute(sql)
             data = db.cursor.fetchone()
             
-        return self._loadWithLogic(data)
+        return self._loadWithLogic(data) if data else None
 
     def Where(self, col:str, val: str):
         with DataBaseConnection() as db:
@@ -43,7 +43,7 @@ class DataBase(DataBaseConnection):
             db.cursor.execute(sql)
             data = db.cursor.fetchall()            
 
-        return [self._loadWithLogic(r) for r in data]
+        return [self._loadWithLogic(r) for r in data] if data else None
 
     def all(self):
         with DataBaseConnection() as db:
@@ -53,7 +53,7 @@ class DataBase(DataBaseConnection):
             db.cursor.execute(sql)
             data = db.cursor.fetchall()
 
-        return [self._loadWithLogic(r) for r in data]
+        return [self._loadWithLogic(r) for r in data] if data else None
 
     def create_event(self, name, description, date, location):
         with DataBaseConnection as db:
