@@ -1,0 +1,110 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="min-h-[92vh] flex items-center justify-center p-4">
+  <div
+    class="w-full max-w-6xl bg-slate-900 rounded-3xl overflow-hidden flex flex-col md:flex-row shadow-xl h-[500px]"
+  >
+    <div class="relative w-full md:w-1/2 text-white">
+      <div class="relative h-full min-h-[400px] flex items-end">
+        <img
+          alt="Event Hub Image"
+          class="object-cover brightness-75"
+          style="position: absolute; height: 100%; width: 100%; inset: 0px"
+          src=""
+        />
+
+        <div class="relative p-10 z-10 text-center md:text-left">
+          <h2 class="text-3xl font-bold mb-2">
+            Join The Event,<br />Create Memories
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div class="w-full md:w-1/2 p-8 md:p-12">
+      <div class="max-w-md mx-auto">
+        <h1 class="text-4xl font-bold text-white mb-4">Login</h1>
+        <p class="text-slate-300 mb-8">
+          Dont&apos;t have an account?
+          <a href="{{ url_for('users.register') }}" class="text-white underline"
+            >Signup</a
+          >
+        </p>
+        <form method="POST" class="space-y-4">
+          <div>
+            <input
+              class="flex h-10 w-full rounded-md border px-3 py-2 text-sm ring-offset-[var(--background)] file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-[var(--foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-slate-800 border-slate-700 text-white placeholder:text-slate-400"
+              placeholder="Email"
+              type="email"
+              name="email"
+              id="email"
+              required
+            />
+          </div>
+          <div class="relative">
+            <input
+              class="flex h-10 w-full rounded-md border px-3 py-2 text-sm ring-offset-[var(--background)] file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-[var(--foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-slate-800 border-slate-700 text-white placeholder:text-slate-400 pr-10"
+              placeholder="Enter your password"
+              type="password"
+              name="password"
+              id="password"
+              required
+            /><button
+              type="button"
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+              aria-label="Toggle password visibility"
+              id="showPassword"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-eye"
+              >
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+          {% if error %}
+          <div class="text-red-800">{{ error }}</div>
+          {% endif %}
+
+          <button
+            class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-[var(--background)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-10 px-4 py-2 w-full bg-purple-600 hover:bg-purple-700 text-white"
+            type="submit"
+          >
+            Login
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const passwordInput = document.getElementById("password");
+  const passwordChange = document.getElementById("showPassword");
+
+  passwordChange.addEventListener("click", () => {
+    const type =
+      passwordInput.getAttribute("type") === "password" ? "text" : "password";
+    passwordInput.setAttribute("type", type);
+  });
+
+  const checkboxBtn = document.getElementById("terms");
+
+  checkboxBtn.addEventListener("click", () => {
+    const isChecked = checkboxBtn.getAttribute("data-state") === "checked";
+
+    checkboxBtn.setAttribute("data-state", isChecked ? "unchecked" : "checked");
+    checkboxBtn.setAttribute("aria-checked", isChecked ? "false" : "true");
+  });
+</script>
+
+{% endblock %}

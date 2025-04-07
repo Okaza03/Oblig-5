@@ -73,6 +73,10 @@
                   <p class="text-sm">{{ current_user.name }}</p>
                   <p class="text-slate-600 text-xs">{{ current_user.email }}</p>
                 </div>
+                {% else %}
+                <div class="flex flex-col justify-center items-start p-4">
+                  <button><a href="/login">Login or Signup</a></button>
+                </div>
                 {% endif %}
                 <nav class="flex items-center gap-0.5">
                   <a
