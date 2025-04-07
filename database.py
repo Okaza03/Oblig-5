@@ -55,4 +55,10 @@ class DataBase(DataBaseConnection):
 
         return [self._loadWithLogic(r) for r in data]
 
-    
+    def create_event(self, name, description, date, location):
+        with DataBaseConnection as db:
+            db.cursor.execute(
+                "INSERT INTO event (user_id, name, description, date, location) VALUES (%s, %s, %s, %s, %s)", 
+                (current_user, name, description, date, location)
+            )
+        return redirect(url_for("/my_events"))
