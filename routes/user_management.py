@@ -18,7 +18,7 @@ def register():
         with DataBase() as db:
             db.create_user(name, email, password)
         return redirect( url_for('users.login') )
-    return render_template("/register.html")
+    return render_template("user/register.html")
 
 
 @users_bp.route('/login', methods=['GET', 'POST'])
@@ -34,8 +34,8 @@ def login():
                 login_user(User(user[0], user[1], user[2], user[4]))
                 return redirect( url_for('home') )
             
-        return render_template('login.html', error = "Invalid credentials")
-    return render_template("login.html")
+        return render_template('user/login.html', error = "Invalid credentials")
+    return render_template("user/login.html")
 
 
 @users_bp.route('/logout')
