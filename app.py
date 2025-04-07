@@ -29,7 +29,7 @@ def notFound(e):
 # Routes
 @app.route("/")
 def home():
-    return render_template("index.html", events=DataBase(Event).all())
+    return render_template("index.html", events=DataBase(Event, load_with=(User, "id", "user_id")).all())
 
 
 @login_required
