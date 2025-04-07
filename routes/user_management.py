@@ -11,7 +11,8 @@ users_bp = Blueprint('users', __name__) # Creates a Blueprint
 @users_bp.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == "POST":
-        name = request.form['name']
+        name = request.form['firstName']
+        name = request.form['lastName']
         email = request.form['email']
         password = generate_password_hash(request.form['password'])
 
