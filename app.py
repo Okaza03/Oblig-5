@@ -24,6 +24,10 @@ def home():
     #return DataBase.firstWhere(User, "id", "1")
     return render_template("index.html", user=current_user)
 
+@app.route("/event")
+def event():
+    return render_template("event.html", )
+
 # Handlers
 @app.errorhandler(404)
 def notFound(e): return render_template("404.html")

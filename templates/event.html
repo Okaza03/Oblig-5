@@ -1,0 +1,6 @@
+{% extends "base.html" %} {% block content %}
+
+<h1>
+  {% if event in events %} Events Found {% else %} No Events Found {% endif %}
+</h1>
+{% endblock %}
