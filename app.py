@@ -14,17 +14,17 @@ login_manager.login_view = "login"
 
 @login_manager.user_loader
 def load_user(user_id):
-    with DataBase() as db:
-        user = db.load_user(user_id)
-    if user:
-        return User(user[0], user[1], user[2], user[3])
-    return None
+    return DataBase.firstWhere(User, "id", user_id)
 
-
+# Routes
 @app.route("/")
 def home():
-
     return render_template("index.html", user=current_user)
+
+# Handlers
+@app.errorhandler(404)
+def notFound(e): return render_template("404.html")
+
 
 
 if __name__ == "__main__":
