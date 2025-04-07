@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 from flask_login import LoginManager, login_required, login_remembered, current_user
 from database import DataBase
 from models.Event import Event
@@ -29,7 +29,9 @@ def notFound(e):
 # Routes
 @app.route("/")
 def home():
-    return render_template("index.html", events=DataBase(Event, load_with=(User, "id", "user_id")).all())
+    return render_template(
+        "index.html", events=DataBase(Event, load_with=(User, "id", "user_id")).all()
+    )
 
 
 @login_required
@@ -42,8 +44,18 @@ def my_events():
 
 
 @login_required
-@app.route("/create-event")
+@app.route("/create-event", methods=["GET", "POST"])
 def create_event():
+    if request.method == "POST":
+        name = request.form.get("name")
+        description = request.form.get("description")
+        date = request.form.get("date")
+        location = request.form.get("location")
+
+        with DataBase as db:
+            db.create_event(name, description, date, location)
+        return redirect(url_for("event.my_events"))
+
     return render_template("event/create-event.html")
 
 
