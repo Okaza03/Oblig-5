@@ -14,7 +14,3 @@ class Event():
         self.description = description
         self.date = date
         self.location = location
-
-    @staticmethod
-    def belongsTo():
-        return (User, "id", "user_id")
