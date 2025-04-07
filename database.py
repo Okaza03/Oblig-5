@@ -42,3 +42,5 @@ class DataBase(DataBaseConnection):
         return result
 
     
+    def create_event(self):
+        return

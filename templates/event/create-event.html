@@ -1,1 +1,88 @@
-{% extends "base.html" %} {% block content %} {% endblock %}
+{% extends "base.html" %} {% block content %}
+
+<div class="flex flex-col items-center justify-center min-h-[92vh]">
+  <div class="flex min-h-1/2 w-full justify-center p-10 items-center">
+    <div
+      class="rounded-xl border bg-[hsl(var(--card))] text-[hsl(var(--card-foreground))] shadow w-1/2"
+    >
+      <div class="flex flex-col space-y-1.5 p-6">
+        <div class="font-semibold leading-none tracking-tight">
+          Create event
+        </div>
+        <div class="text-sm text-[hsl(var(--muted-foreground))]">
+          Create a event in one click
+        </div>
+      </div>
+      <div class="p-6 pt-0">
+        <form for="{{ url_for(create_event) }}">
+          <div class="grid w-full items-center gap-4">
+            <div class="flex flex-col space-y-1.5">
+              <label
+                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                for="name"
+                >Name</label
+              ><input
+                class="flex h-9 w-full rounded-md border border-[hsl(var(--input))] bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-[hsl(var(--foreground))] placeholder:text-[hsl(var(--muted-foreground))] focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                id="name"
+                name="name"
+                placeholder="Name of your project"
+              />
+            </div>
+            <div class="flex flex-col space-y-1.5">
+              <label
+                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                for="description"
+                >Description</label
+              ><input
+                class="flex h-9 w-full rounded-md border border-[hsl(var(--input))] bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-[hsl(var(--foreground))] placeholder:text-[hsl(var(--muted-foreground))] focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                id="description"
+                name="description"
+                placeholder="Description of your project"
+              />
+            </div>
+            <div class="flex flex-col space-y-1.5">
+              <label
+                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                for="date"
+                >Date</label
+              ><input
+                class="flex h-9 w-full rounded-md border border-[hsl(var(--input))] bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-[hsl(var(--foreground))] placeholder:text-[hsl(var(--muted-foreground))] focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                type="date"
+                id="date"
+                name="date"
+                placeholder="date of your project"
+              />
+            </div>
+            <div class="flex flex-col space-y-1.5">
+              <label
+                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                for="location"
+                >Location</label
+              ><input
+                class="flex h-9 w-full rounded-md border border-[hsl(var(--input))] bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-[hsl(var(--foreground))] placeholder:text-[hsl(var(--muted-foreground))] focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                id="location"
+                name="location"
+                placeholder="location of your project"
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="items-center p-6 pt-0 flex justify-between">
+        <button
+          class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-[hsl(var(--input))] bg-[hsl(var(--background))] shadow-sm hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))] h-9 px-4 py-2"
+          type="reset"
+        >
+          Cancel</button
+        ><button
+          class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-[hsl(var(--input))] bg-[hsl(var(--foreground))] text-[hsl(var(--accent))] shadow-sm hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))] h-9 px-4 py-2"
+          type="submit"
+        >
+          Create
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
