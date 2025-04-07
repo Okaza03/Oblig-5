@@ -1,11 +1,13 @@
 from flask import Flask, render_template
 from flask_login import LoginManager, login_required, login_remembered, current_user
 from database import DataBase
+from routes.user_management import users_bp
 from models.user import User
 import os
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
+app.register_blueprint(users_bp)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -25,6 +27,7 @@ def load_user(user_id):
 def home():
 
     return render_template("index.html", user=current_user)
+
 
 
 if __name__ == "__main__":
