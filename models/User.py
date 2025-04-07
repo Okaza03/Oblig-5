@@ -3,6 +3,7 @@ from flask_login import UserMixin
 
 class User(UserMixin):
     table = "user"
+    col_count = 5
     
     def __init__(self, id, firstName, lastName, email, password):
         self.id = id

@@ -1,1 +1,10 @@
-{% extends "base.html" %} {% block content %} {% endblock %}
+{% extends "base.html" %} {% block content %}
+
+<div>
+  {% if my_events %}
+  <div>List of your events</div>
+  {% else %}
+  <div>You dont have any events</div>
+  {% endif %}
+</div>
+{% endblock %}

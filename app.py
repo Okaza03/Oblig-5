@@ -19,24 +19,32 @@ login_manager.login_view = "login"
 def load_user(user_id):
     return DataBase(User).firstWhere("id", user_id)
 
+
 # Handlers
 @app.errorhandler(404)
-def notFound(e): return render_template("404.html")
+def notFound(e):
+    return render_template("404.html")
+
 
 # Routes
 @app.route("/")
 def home():
-    return render_template("index.html", events=DataBase(Event).all())
+    return render_template("index.html", events=DataBase(Event, load_with=(User, "id", "user_id")).all())
+
 
 @login_required
 @app.route("/my-events")
 def my_events():
-    return render_template("event/my-events.html" )
+    return render_template(
+        "event/my-events.html",
+        my_events=DataBase(Event).Where("user_id", "current_user"),
+    )
+
 
 @login_required
 @app.route("/create-event")
 def create_event():
-    return render_template("event/create-event.html" )
+    return render_template("event/create-event.html")
 
 
 if __name__ == "__main__":
