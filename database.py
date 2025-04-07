@@ -1,4 +1,6 @@
 from DataBaseConnection import DataBaseConnection
+from flask import redirect, url_for
+from flask_login import current_user
 
 class DataBase(DataBaseConnection):
 
@@ -23,6 +25,10 @@ class DataBase(DataBaseConnection):
             data = db.cursor.fetchall()            
         return [self.model(*r) for r in data] if data else None
 
-    
-    def create_event(self):
-        return
+    def create_event(self, name, description, date, location):
+        with DataBaseConnection as db:
+            db.cursor.execute(
+                "INSERT INTO event (user_id, name, description, date, location) VALUES (%s, %s, %s, %s, %s)", 
+                (current_user, name, description, date, location)
+            )
+        return redirect(url_for("/my_events"))
