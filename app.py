@@ -21,6 +21,7 @@ def load_user(user_id):
 # Routes
 @app.route("/")
 def home():
+    #return DataBase.firstWhere(User, "id", "1")
     return render_template("index.html", user=current_user)
 
 # Handlers

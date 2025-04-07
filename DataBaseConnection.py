@@ -11,7 +11,7 @@ class DataBaseConnection():
             host=os.getenv("DB_HOST"),
             user=os.getenv("DB_USER"),
             password=os.getenv("DB_PASSWORD"),
-            name=os.getenv("DB_NAME"),
+            database=os.getenv("DB_NAME"),
         )
 
     def __enter__(self):
