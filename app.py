@@ -52,7 +52,7 @@ def create_event():
         date = request.form.get("date")
         location = request.form.get("location")
 
-        with DataBase(Event) as db:
+        with DataBase as db:
             db.create_event(name, description, date, location)
         return redirect(url_for("event.my_events"))
 
