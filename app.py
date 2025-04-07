@@ -26,13 +26,13 @@ def home():
 
 @login_required
 @app.route("/my-events")
-def event():
-    return render_template("/event/my-events.html", )
+def my_events():
+    return render_template("event/my-events.html" )
 
 @login_required
 @app.route("/create-event")
-def event():
-    return render_template("/event/create-event.html", )
+def create_event():
+    return render_template("event/create-event.html" )
 
 # Handlers
 @app.errorhandler(404)
