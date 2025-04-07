@@ -27,9 +27,15 @@ def notFound(e): return render_template("404.html")
 def home():
     return render_template("index.html", user=current_user)
 
-@app.route("/event")
+@login_required
+@app.route("/my-events")
 def event():
-    return render_template("event.html", )
+    return render_template("/event/my-events.html", )
+
+@login_required
+@app.route("/create-event")
+def event():
+    return render_template("/event/create-event.html", )
 
 
 if __name__ == "__main__":
