@@ -10,3 +10,6 @@ class User(UserMixin):
         self.lastName = lastName
         self.email = email
         self.password = password
+
+    def fullName(self):
+        return f"{self.firstName} {self.lastName}"

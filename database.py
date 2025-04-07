@@ -3,25 +3,25 @@ from DataBaseConnection import DataBaseConnection
 
 class DataBase(DataBaseConnection):
 
-    @classmethod
-    def firstWhere(cls, model, col:str, val: str):
+    def __init__(self, model):
+        self.model = model
+
+    def firstWhere(self, col:str, val: str):
         with DataBaseConnection() as db:
-            db.cursor.execute(f"SELECT * FROM {model.table} WHERE {col} = {val}")
+            db.cursor.execute(f"SELECT * FROM {self.model.table} WHERE {col} = {val}")
             data = db.cursor.fetchone()
-        return model(*data) if data else None
+        return self.model(*data) if data else None
 
-    @classmethod
-    def Where(cls, model, col:str, val: str):
+    def Where(self, col:str, val: str):
         with DataBaseConnection() as db:
-            db.cursor.execute(f"SELECT * FROM {model.table} WHERE {col} = {val}")
+            db.cursor.execute(f"SELECT * FROM {self.model.table} WHERE {col} = {val}")
             data = db.cursor.fetchall()            
-        return [model(*r) for r in data] if data else None
+        return [self.model(*r) for r in data] if data else None
 
-    @classmethod
-    def all(cls, model):
+    def all(self):
         with DataBaseConnection() as db:
-            db.cursor.execute(f"SELECT * FROM {model.table}")
+            db.cursor.execute(f"SELECT * FROM {self.model.table}")
             data = db.cursor.fetchall()            
-        return [model(*r) for r in data] if data else None
+        return [self.model(*r) for r in data] if data else None
 
     
