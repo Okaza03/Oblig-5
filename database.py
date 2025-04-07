@@ -6,7 +6,6 @@ class DataBase(DataBaseConnection):
     # Methods
     @classmethod
     def firstWhere(cls, model, col:str, val: str):
-        print(model)
         with DataBaseConnection() as db:
             db.cursor.execute(f"SELECT * FROM {model.table} WHERE {col} = {val}")
             data = db.cursor.fetchone()
