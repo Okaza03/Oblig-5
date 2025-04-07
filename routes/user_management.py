@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, request, Blueprint
 from flask_login import logout_user, login_required, login_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from database import DataBase
-from models.user import User
+from models.User import User
 
 
 users_bp = Blueprint('users', __name__) # Creates a Blueprint
