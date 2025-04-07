@@ -1,8 +1,9 @@
 from flask import Flask, render_template
 from flask_login import LoginManager, login_required, login_remembered, current_user
 from database import DataBase
+from models.Event import Event
 from routes.user_management import users_bp
-from models.user import User
+from models.User import User
 import os
 
 app = Flask(__name__)
@@ -25,7 +26,7 @@ def notFound(e): return render_template("404.html")
 # Routes
 @app.route("/")
 def home():
-    return render_template("index.html", user=current_user)
+    return render_template("index.html", events=DataBase.all(Event))
 
 @login_required
 @app.route("/my-events")
