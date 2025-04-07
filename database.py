@@ -1,4 +1,3 @@
-import mysql.connector
 from DataBaseConnection import DataBaseConnection
 
 class DataBase(DataBaseConnection):
