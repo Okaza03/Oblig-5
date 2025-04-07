@@ -19,6 +19,7 @@
     </div>
 
     <div class="w-5/6 h-[87vh] overflow-y-scroll p-6">
+      {% if events %}
       <div class="grid grid-cols-4 gap-4 pt-4">
         {% for event in events %}
         <div class="rounded-xl border shadow overflow-hidden h-fit">
@@ -57,6 +58,9 @@
         </div>
         {% endfor %}
       </div>
+      {% else %}
+      <div>No events found</div>
+      {% endif %}
     </div>
   </div>
 </div>
