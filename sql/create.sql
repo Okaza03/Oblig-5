@@ -25,11 +25,12 @@ CREATE TABLE IF NOT EXISTS `eventhub`.`user` (
   `firstName` VARCHAR(45) NULL DEFAULT NULL,
   `lastName` VARCHAR(45) NULL DEFAULT NULL,
   `email` VARCHAR(45) NULL DEFAULT NULL,
-  `password` VARCHAR(60) NULL DEFAULT NULL,
+  `password` VARCHAR(255) NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
 ENGINE = InnoDB
+AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -42,16 +43,16 @@ CREATE TABLE IF NOT EXISTS `eventhub`.`event` (
   `user_id` INT NOT NULL,
   `name` VARCHAR(45) NULL DEFAULT NULL,
   `description` VARCHAR(255) NULL DEFAULT NULL,
-  `date` DATE NULL DEFAULT NULL,
+  `date` DATETIME NULL DEFAULT NULL,
   `location` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC) VISIBLE,
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
   INDEX `user_id_idx` (`user_id` ASC) VISIBLE,
   CONSTRAINT `event_user_id`
     FOREIGN KEY (`user_id`)
     REFERENCES `eventhub`.`user` (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -67,14 +68,10 @@ CREATE TABLE IF NOT EXISTS `eventhub`.`event_has_user` (
   INDEX `fk_event_has_user_event1_idx` (`event_id` ASC) VISIBLE,
   CONSTRAINT `fk_event_has_user_event1`
     FOREIGN KEY (`event_id`)
-    REFERENCES `eventhub`.`event` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    REFERENCES `eventhub`.`event` (`id`),
   CONSTRAINT `fk_event_has_user_user1`
     FOREIGN KEY (`user_id`)
-    REFERENCES `eventhub`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `eventhub`.`user` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
