@@ -52,7 +52,7 @@ def create_event():
         new_event = Event(None, "2",name, description, date, location) # Todo: id nullable
 
         if not DataBase(Event).createIfNotExists(new_event):
-                return render_template("event/create-event.html", error="Something went wrong")
+            return render_template("event/create-event.html", error="Something went wrong")
 
         return redirect(url_for("my_events"))
 
