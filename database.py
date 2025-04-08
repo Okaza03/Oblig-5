@@ -57,7 +57,7 @@ class DataBase(DataBaseConnection):
         return [self._loadWithLogic(r) for r in data] if data else None
 
     def createIfNotExists(self, model):
-        if self.model.unique and self.firstWhere(self.model.unique, model.unique_val()):
+        if self.model.unique and self.firstWhere(self.model.unique, getattr(self.model.unique, model)):
             return None
         else:
             with DataBaseConnection() as db:
