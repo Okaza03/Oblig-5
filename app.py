@@ -12,7 +12,7 @@ app.register_blueprint(user_bp)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = "login"
+login_manager.login_view = "user.login"
 
 
 @login_manager.user_loader
@@ -33,16 +33,16 @@ def home():
         "index.html", events=DataBase(Event, load_with=(User, "id", "user_id")).all()
     )
 
-@login_required
 @app.route("/my-events")
+@login_required
 def my_events():
     return render_template(
         "event/my-events.html",
         my_events=DataBase(Event).Where("user_id", current_user.id),
     )
 
-@login_required
 @app.route("/create-event", methods=["GET", "POST"])
+@login_required
 def create_event():
     if request.method == "POST":
         name = request.form.get("name")
