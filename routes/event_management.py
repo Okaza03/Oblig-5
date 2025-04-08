@@ -1,10 +1,9 @@
 from flask import render_template, redirect, url_for, request, Blueprint
 from flask_login import logout_user, login_required, login_user
 from database import DataBase
-from models.Event import Event  # Your event model class
+from models.Event import Event
 
-
-event_bp = Blueprint("events", __name__)  # Creates a Blueprint
+event_bp = Blueprint("events", __name__)  
 
 
 @event_bp.route("/create-event", methods=["GET", "POST"])
