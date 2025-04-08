@@ -2,9 +2,9 @@
 
 <div class="min-h-[92vh] flex items-center justify-center p-4">
   <div
-    class="w-full max-w-6xl bg-slate-900 rounded-3xl overflow-hidden flex flex-col md:flex-row shadow-xl h-[500px]"
+    class="w-full max-w-6xl rounded-3xl overflow-hidden flex flex-col md:flex-row shadow-xl h-[500px]"
   >
-    <div class="relative w-full md:w-1/2 text-white">
+    <div class="relative w-full md:w-1/2 text-[var(--primary-text)]">
       <div class="relative h-full min-h-[400px] flex items-end">
         <img
           alt="Event Hub Image"
@@ -22,10 +22,14 @@
     </div>
     <div class="w-full md:w-1/2 p-8 md:p-12">
       <div class="max-w-md mx-auto">
-        <h1 class="text-4xl font-bold text-white mb-4">Create an account</h1>
-        <p class="text-slate-300 mb-8">
+        <h1 class="text-4xl font-bold text-[var(--primary-text)] mb-4">
+          Create an account
+        </h1>
+        <p class="text-[var(--muted-foreground)] mb-8">
           Already have an account?
-          <a href="{{ url_for('users.login') }}" class="text-white underline"
+          <a
+            href="{{ url_for('users.login') }}"
+            class="text-[var(--primary-text)] underline"
             >Log in</a
           >
         </p>
@@ -37,7 +41,7 @@
           <div class="grid grid-cols-2 gap-4">
             <div>
               <input
-                class="flex h-10 w-full rounded-md border px-3 py-2 text-sm ring-offset-[var(--background)] file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-[var(--foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-[hsl(var(--background))] border-[hsl(var())] text-white placeholder:text-slate-400"
+                class="flex h-10 w-full rounded-md border px-3 py-2 text-sm ring-offset-[var(--background)] file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-[var(--foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-[var(--background)] border-[var(--border)] text-[var(--primary-text)] placeholder:text-[var(--placeholder)]"
                 placeholder="First name"
                 type="text"
                 name="firstName"
@@ -47,7 +51,7 @@
             </div>
             <div>
               <input
-                class="flex h-10 w-full rounded-md border px-3 py-2 text-sm ring-offset-[var(--background)] file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-[var(--foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-[hsl(var(--background))] border-[hsl(var())] text-white placeholder:text-slate-400"
+                class="flex h-10 w-full rounded-md border px-3 py-2 text-sm ring-offset-[var(--background)] file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-[var(--foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-[var(--background)] border-[var(--border)] text-[var(--primary-text)] placeholder:text-[var(--placeholder)]"
                 placeholder="Last name"
                 type="text"
                 name="lastName"
@@ -58,7 +62,7 @@
           </div>
           <div>
             <input
-              class="flex h-10 w-full rounded-md border px-3 py-2 text-sm ring-offset-[var(--background)] file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-[var(--foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-[hsl(var(--background))] border-[hsl(var())] text-white placeholder:text-slate-400"
+              class="flex h-10 w-full rounded-md border px-3 py-2 text-sm ring-offset-[var(--background)] file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-[var(--foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-[var(--background)] border-[var(--border)] text-[var(--primary-text)] placeholder:text-[var(--placeholder)]"
               placeholder="Email"
               type="email"
               name="email"
@@ -68,7 +72,7 @@
           </div>
           <div class="relative">
             <input
-              class="flex h-10 w-full rounded-md border px-3 py-2 text-sm ring-offset-[var(--background)] file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-[var(--foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-[hsl(var(--background))] border-[hsl(var())] text-white placeholder:text-slate-400 pr-10"
+              class="flex h-10 w-full rounded-md border px-3 py-2 text-sm ring-offset-[var(--background)] file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-[var(--foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-[var(--background)] border-[var(--border)] text-[var(--primary-text)] placeholder:text-[var(--placeholder)] pr-10"
               placeholder="Enter your password"
               type="password"
               name="password"
@@ -76,7 +80,7 @@
               required
             /><button
               type="button"
-              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--placeholder)]"
               aria-label="Toggle password visibility"
               id="showPassword"
             >
@@ -107,7 +111,7 @@
               aria-checked="false"
               data-state="unchecked"
               value="on"
-              class="size-4 shrink-0 rounded-sm border ring-offset-[var(--background)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:text-[var(--primary-foreground)] border-[hsl(var())] data-[state=checked]:bg-white data-[state=checked]:border-[hsl(var())]"
+              class="size-4 shrink-0 rounded-sm border ring-offset-[var(--background)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:text-[var(--primary-foreground)] border-[var(--border)] data-[state=checked]:bg-white data-[state=checked]:border-[var(--border)]"
               id="terms"
             ></button
             ><input
@@ -119,13 +123,13 @@
               required
             /><label
               for="terms"
-              class="text-sm font-medium leading-none text-white peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              class="text-sm font-medium leading-none text-[var(--primary-text)] peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >I agree to the
               <a href="#" class="underline">Terms &amp; Conditions</a></label
             >
           </div> -->
           <button
-            class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-[var(--background)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-10 px-4 py-2 w-full bg-purple-600 hover:bg-purple-700 text-white"
+            class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-[var(--background)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-10 px-4 py-2 w-full bg-[var(--light-button)] hover:bg-[var(--light-button-hover)] text-[var(--light-primary-text)]"
             type="submit"
           >
             Create account
