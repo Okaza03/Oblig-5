@@ -79,20 +79,20 @@
                   </p>
                 </div>
                 <select name="" id="">
-                  <button><a href="{{ url_for('profile')}}">Profile</a></button>
-                  <button><a href="{{ url_for('users.logout')}}">Logout</a></button>
+                  <button><a href="{{ url_for('user.profile')}}">Profile</a></button>
+                  <button><a href="{{ url_for('user.logout')}}">Logout</a></button>
                 </select>
                 {% else %}
                 <div class="flex flex-row justify-center items-start p-4 gap-2">
                   <button
                     class="border rounded-lg px-2 py-1 hover:bg-white hover:text-black"
                   >
-                    <a href="{{ url_for('users.login')}}">Login</a>
+                    <a href="{{ url_for('user.login')}}">Login</a>
                   </button>
                   <button
                     class="border rounded-lg px-2 py-1 hover:bg-white hover:text-black"
                   >
-                    <a href="{{ url_for('users.signup')}}">Signup</a>
+                    <a href="{{ url_for('user.signup')}}">Signup</a>
                   </button>
                 </div>
                 {% endif %}

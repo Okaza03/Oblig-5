@@ -5,48 +5,53 @@ from database import DataBase
 from models.User import User
 
 
-users_bp = Blueprint('users', __name__) # Creates a Blueprint
+user_bp = Blueprint("user", __name__)  # Creates a Blueprint
 
 
-@users_bp.route("/signup", methods=["GET", "POST"])
+@user_bp.route("/profile")
+def profile():
+    return render_template("user/profile.html")
+
+
+@user_bp.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-        firstName = request.form['firstName']
-        lastName = request.form['lastName']
-        email = request.form['email']
-        password = generate_password_hash(request.form['password'])
+        firstName = request.form["firstName"]
+        lastName = request.form["lastName"]
+        email = request.form["email"]
+        password = generate_password_hash(request.form["password"])
 
         new_user = User(None, firstName, lastName, email, password)
         if not DataBase(User).createIfNotExists(new_user):
-            return render_template('users/signup.html', error="Email already in use")
+            return render_template("user/signup.html", error="Email already in use")
 
-        return redirect(url_for('users.login') )
+        return redirect(url_for("user.login"))
     return render_template("user/signup.html")
 
 
-@users_bp.route('/login', methods=['GET', 'POST'])
-def login():        
-        if current_user.is_authenticated: return redirect(url_for('index'))
-        
-        if request.method == "POST":
-            email = request.form['email']
-            password = request.form['password']
+@user_bp.route("/login", methods=["GET", "POST"])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for("index"))
 
-            user = DataBase(User).firstWhere("email", email)
-        
-            if user and check_password_hash(user.password, password):
-                login_user(user)
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
 
-                return redirect(url_for('home') )
+        user = DataBase(User).firstWhere("email", email)
 
-            return render_template('users/login.html', error="Invalid credentials")
-            
-        return render_template("users/login.html")
+        if user and check_password_hash(user.password, password):
+            login_user(user)
+
+            return redirect(url_for("home"))
+
+        return render_template("user/login.html", error="Invalid credentials")
+
+    return render_template("user/login.html")
 
 
-@users_bp.route('/logout')
+@user_bp.route("/logout")
 @login_required
 def logout():
     logout_user()
     return redirect(url_for("home"))
-        

@@ -2,13 +2,13 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_login import LoginManager, login_required, current_user
 from database import DataBase
 from models.Event import Event
-from routes.user_management import users_bp
+from routes.user_management import user_bp
 from models.User import User
 import os
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
-app.register_blueprint(users_bp)
+app.register_blueprint(user_bp)
 
 login_manager = LoginManager()
 login_manager.init_app(app)

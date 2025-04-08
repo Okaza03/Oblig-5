@@ -28,13 +28,13 @@
         <p class="text-[var(--muted-foreground)] mb-8">
           Already have an account?
           <a
-            href="{{ url_for('users.login') }}"
+            href="{{ url_for('user.login') }}"
             class="text-[var(--primary-text)] underline"
             >Log in</a
           >
         </p>
         <form
-          action="{{ url_for('users.signup') }}"
+          action="{{ url_for('user.signup') }}"
           method="POST"
           class="space-y-4"
         >
