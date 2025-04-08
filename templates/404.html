@@ -1,8 +1,15 @@
 {% extends "base.html" %} {% block content%}
 
-<div>404</div>
-<div>
-  <button><a href="/">Return Home</a></button>
+<div
+  class="justify-center flex flex-col items-center min-h-[92vh] max-h-[92vh]"
+>
+  <div class="text-9xl pb-6">404</div>
+  <p class="pb-4">Page not found</p>
+  <button
+    class="text-[var(--light-primary-text)] bg-[var(--light-button)] hover:bg-[var(--light-button-hover)] px-4 py-2 border border-[var(--border)] rounded-lg"
+  >
+    <a href="/">Return Home</a>
+  </button>
 </div>
 
 {% endblock %}

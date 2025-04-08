@@ -1,6 +1,8 @@
+# Virtual Environment
 /.sahara
-__pycache__/
-*~
-/venv
-.env
 /.mordi
+/venv
+
+*~
+.env
+__pycache__/
