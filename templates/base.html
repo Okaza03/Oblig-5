@@ -70,18 +70,46 @@
               >
                 {% if current_user.is_authenticated %}
 
-                <div class="flex flex-col justify-center items-start p-4">
-                  <p class="text-sm text-[var(--primary)]">
-                    {{ current_user.name }}
-                  </p>
-                  <p class="text-[var(--muted-foreground)] text-xs">
-                    {{ current_user.email }}
-                  </p>
+                <div class="relative inline-block text-left">
+                  <div
+                    class="flex flex-row justify-center items-start p-4 cursor-pointer"
+                    id="dropdown"
+                  >
+                    <img
+                      src="{{ url_for('static', filename='default_profile.jpg')}}"
+                      alt=""
+                      class="size-8 border border-[var(--border)] rounded-full"
+                    />
+                    <div class="flex flex-col pl-2">
+                      <p class="text-sm text-[var(--primary)]">
+                        {{ current_user.fullName() }}
+                      </p>
+                      <p class="text-[var(--muted-foreground)] text-xs">
+                        {{ current_user.email }}
+                      </p>
+                    </div>
+                  </div>
+                  <div
+                    class="absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-[var(--card)] z-10 hidden"
+                    id="menu"
+                  >
+                    <div class="py-1">
+                      <a
+                        href="{{ url_for('user.profile') }}"
+                        class="block px-4 py-2 text-sm text-[var(--primary-text)] hover:bg-[var(--muted)]"
+                      >
+                        Profile
+                      </a>
+                      <a
+                        href="{{ url_for('user.logout') }}"
+                        class="block px-4 py-2 text-sm text-[var(--primary-text)] hover:bg-[var(--muted)]"
+                      >
+                        Logout
+                      </a>
+                    </div>
+                  </div>
                 </div>
-                <select name="" id="">
-                  <button><a href="{{ url_for('user.profile')}}">Profile</a></button>
-                  <button><a href="{{ url_for('user.logout')}}">Logout</a></button>
-                </select>
+
                 {% else %}
                 <div class="flex flex-row justify-center items-start p-4 gap-2">
                   <button
@@ -106,3 +134,18 @@
     </main>
   </body>
 </html>
+
+<script>
+  const element = document.getElementById("dropdown");
+  const menu = document.getElementById("menu");
+
+  element.addEventListener("click", () => {
+    menu.classList.toggle("hidden");
+  });
+
+  window.addEventListener("click", (e) => {
+    if (!element.contains(e.target) && !menu.contains(e.target)) {
+      menu.classList.add("hidden");
+    }
+  });
+</script>
