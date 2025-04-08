@@ -8,8 +8,8 @@ from models.User import User
 users_bp = Blueprint('users', __name__) # Creates a Blueprint
 
 
-@users_bp.route('/register', methods=['GET', 'POST'])
-def register():
+@users_bp.route("/signup", methods=["GET", "POST"])
+def signup():
     if request.method == "POST":
         name = request.form['firstName']
         name = request.form['lastName']
@@ -19,7 +19,7 @@ def register():
         with DataBase() as db:
             db.create_user(name, email, password)
         return redirect( url_for('users.login') )
-    return render_template("user/register.html")
+    return render_template("user/signup.html")
 
 
 @users_bp.route('/login', methods=['GET', 'POST'])
