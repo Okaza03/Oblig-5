@@ -3,6 +3,43 @@
 <div>
   {% if my_events %}
   <div>List of your events</div>
+  <div class="grid grid-cols-4 gap-4 pt-4">
+    {% for event in my_events %}
+    <div
+      class="rounded-xl border border-[var(--border)] shadow overflow-hidden h-fit"
+    >
+      <div>
+        <img
+          src="https://picsum.photos/300/100?random={{ event.id }}"
+          alt="event {{ event.id }}"
+          class="size-full object-contain"
+        />
+      </div>
+
+      <div
+        class="px-6 py-2 flex flex-row items-center justify-between space-y-0"
+      >
+        <div class="relative flex flex-col items-start w-full mb-4">
+          <p>{{ event.name }}</p>
+
+          <p class="text-sm">{{ event.description }}</p>
+        </div>
+      </div>
+      <div class="p-6 pt-0">
+        <div class="flex flex-row justify-between">
+          <div>
+            <p class="text-xs text-[var(--muted-foreground)]">
+              {{ event.date }}
+            </p>
+            <p class="text-xs text-[var(--muted-foreground)]">
+              {{ event.location }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
   {% else %}
   <div>You dont have any events</div>
   {% endif %}

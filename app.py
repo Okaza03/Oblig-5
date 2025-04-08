@@ -33,6 +33,7 @@ def home():
         "index.html", events=DataBase(Event, load_with=(User, "id", "user_id")).all()
     )
 
+
 @app.route("/my-events")
 @login_required
 def my_events():
@@ -40,6 +41,7 @@ def my_events():
         "event/my-events.html",
         my_events=DataBase(Event).Where("user_id", current_user.id),
     )
+
 
 @app.route("/create-event", methods=["GET", "POST"])
 @login_required
@@ -50,10 +52,14 @@ def create_event():
         date = request.form.get("date")
         location = request.form.get("location")
 
-        new_event = Event(None, "2",name, description, date, location) # Todo: id nullable
+        new_event = Event(
+            None, "2", name, description, date, location
+        )  # Todo: id nullable
 
         if not DataBase(Event).createIfNotExists(new_event):
-            return render_template("event/create-event.html", error="Something went wrong")
+            return render_template(
+                "event/create-event.html", error="Something went wrong"
+            )
 
         return redirect(url_for("my_events"))
 

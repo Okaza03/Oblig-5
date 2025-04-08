@@ -10,7 +10,7 @@ user_bp = Blueprint("user", __name__)  # Creates a Blueprint
 
 @user_bp.route("/profile")
 def profile():
-    return render_template("user/profile.html")
+    return render_template("user/profile.html", user=current_user)
 
 
 @user_bp.route("/signup", methods=["GET", "POST"])
