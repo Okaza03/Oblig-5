@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from flask_login import LoginManager, login_required, login_remembered, current_user
+from flask_login import LoginManager, login_required, current_user
 from database import DataBase
 from models.Event import Event
 from routes.user_management import users_bp
@@ -33,16 +33,13 @@ def home():
         "index.html", events=DataBase(Event, load_with=(User, "id", "user_id")).all()
     )
 
-
 @login_required
 @app.route("/my-events")
 def my_events():
     return render_template(
         "event/my-events.html",
-        my_events=DataBase(Event).Where("user_id", "current_user"),
+        my_events=DataBase(Event).Where("user_id", current_user.id),
     )
-
-
 
 @app.route("/create-event", methods=["GET", "POST"])
 def create_event():

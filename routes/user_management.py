@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, request, Blueprint
-from flask_login import logout_user, login_required, login_user
+from flask_login import logout_user, login_required, login_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from database import DataBase
 from models.User import User
@@ -23,20 +23,23 @@ def signup():
 
 
 @users_bp.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == "POST":
-        email = request.form['email']
-        password = request.form['password']
+def login():        
+        if current_user.is_authenticated: return redirect(url_for('index'))
+        
+        if request.method == "POST":
+            email = request.form['email']
+            password = request.form['password']
 
-        with DataBase() as db:
-            user = db.load_user_by_email(email)
+            user = DataBase(User).firstWhere("email", email)
+        
+            if user and check_password_hash(user.password, password):
+                login_user(user)
 
-            if user and check_password_hash(user[3], password):
-                login_user(User(user[0], user[1], user[2], user[4]))
-                return redirect( url_for('home') )
+                return redirect(url_for('home') )
+
+            return render_template('session/login.html', error="Invalid credentials")
             
-        return render_template('user/login.html', error = "Invalid credentials")
-    return render_template("user/login.html")
+        return render_template("session/login.html")
 
 
 @users_bp.route('/logout')
