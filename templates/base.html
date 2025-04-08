@@ -71,20 +71,28 @@
                 {% if current_user.is_authenticated %}
 
                 <div class="flex flex-col justify-center items-start p-4">
-                  <p class="text-sm">{{ current_user.name }}</p>
-                  <p class="text-slate-600 text-xs">{{ current_user.email }}</p>
+                  <p class="text-sm text-[var(--primary)]">
+                    {{ current_user.name }}
+                  </p>
+                  <p class="text-[var(--muted-foreground)] text-xs">
+                    {{ current_user.email }}
+                  </p>
                 </div>
+                <select name="" id="">
+                  <button><a href="{{ url_for('profile')}}">Profile</a></button>
+                  <button><a href="{{ url_for('users.logout')}}">Logout</a></button>
+                </select>
                 {% else %}
                 <div class="flex flex-row justify-center items-start p-4 gap-2">
                   <button
                     class="border rounded-lg px-2 py-1 hover:bg-white hover:text-black"
                   >
-                    <a href="/login">Login</a>
+                    <a href="{{ url_for('users.login')}}">Login</a>
                   </button>
                   <button
                     class="border rounded-lg px-2 py-1 hover:bg-white hover:text-black"
                   >
-                    <a href="/signup">Signup</a>
+                    <a href="{{ url_for('users.signup')}}">Signup</a>
                   </button>
                 </div>
                 {% endif %}
