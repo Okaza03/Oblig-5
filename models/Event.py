@@ -7,9 +7,7 @@ class Event():
     table = "event"
     col_count = 6
     fillable = ["user_id", "name", "description", "date", "location"]
-
-    def unique(self):
-        return None
+    unique = None
     
     def __init__(self, id, user_id, name, description, date, location):
         self.id = id
