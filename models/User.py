@@ -6,9 +6,6 @@ class User(UserMixin):
     col_count = 5
     fillable=["firstName", "lastName", "email", "password"]
     unique="email"
-
-    def unique_val(self):
-        return self.email
     
     def __init__(self, id, firstName, lastName, email, password):
         self.id = id

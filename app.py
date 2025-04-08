@@ -42,7 +42,6 @@ def my_events():
         my_events=DataBase(Event).Where("user_id", current_user.id),
     )
 
-
 @login_required
 @app.route("/create-event", methods=["GET", "POST"])
 def create_event():
