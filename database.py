@@ -19,15 +19,12 @@ class DataBase(DataBaseConnection):
 
 
     def _loadWithLogic(self, row):
-        if self.load_with:
-            row = row[1:]
-
         model = self.model(*row[: self.model.col_count])
         if self.load_with:
             setattr(
                 model,
                 self.foreign_model.table,
-                self.foreign_model(*row[self.foreign_model.col_count :]),
+                self.foreign_model(*row[self.foreign_model.col_count+1:]),
             )
 
         return model
