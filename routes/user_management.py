@@ -18,7 +18,7 @@ def signup():
 
         new_user = User(None, firstName, lastName, email, password)
         if not DataBase(User).createIfNotExists(new_user):
-            return render_template('users/signup.html', error="Email already in use")
+            return render_template('user/signup.html', error="Email already in use")
 
         return redirect(url_for('users.login') )
     return render_template("user/signup.html")
@@ -39,9 +39,9 @@ def login():
 
                 return redirect(url_for('home') )
 
-            return render_template('users/login.html', error="Invalid credentials")
+            return render_template('user/login.html', error="Invalid credentials")
             
-        return render_template("users/login.html")
+        return render_template("user/login.html")
 
 
 @users_bp.route('/logout')
