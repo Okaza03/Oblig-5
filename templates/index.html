@@ -9,7 +9,7 @@
     </h2>
   </div>
   <div class="flex w-full min-h-[87vh]">
-    <div class="w-1/6 h-[87vh] sticky top-0 p-4 border-r overflow-y-auto">
+    <div class="w-1/6 h-[87vh] sticky top-0 p-4 border-r border-[var(--border)] overflow-y-auto">
       <div class="flex flex-col justify-between">
         <label class="block text-sm mb-1">Sort By</label>
       </div>
@@ -22,7 +22,7 @@
       {% if events %}
       <div class="grid grid-cols-4 gap-4 pt-4">
         {% for event in events %}
-        <div class="rounded-xl border shadow overflow-hidden h-fit">
+        <div class="rounded-xl border border-[var(--border)] shadow overflow-hidden h-fit">
           <div>
             <img
               src="https://picsum.photos/300/100?random={{ event.id }}"

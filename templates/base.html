@@ -9,16 +9,12 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='style/main.css') }}"
     />
-    <script
-      defer
-      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
-    ></script>
   </head>
-  <body class="bg-[hsl(var(--background))] text-[hsl(var(--primary))]">
+  <body class="bg-[var(--background)] text-[var(--primary)]">
     <main class="relative flex min-h-svh flex-col">
       <div class="flex flex-1 flex-col container mx-auto min-h-screen">
         <header
-          class="h-[8vh] sticky top-0 z-50 w-full bg-[hsl(varvar(--background))/95] backdrop-blur supports-[backdrop-filter]:bg-[hsl(var(--background))/60]"
+          class="h-[8vh] sticky top-0 z-50 w-full bg-[var(--background)/95] backdrop-blur supports-[backdrop-filter]:bg-[var(--background)/60]"
         >
           <div class="">
             <div class="container flex h-14 items-center gap-2 md:gap-4">
@@ -58,12 +54,12 @@
                 >
                 <nav class="flex items-center gap-4 text-sm xl:gap-6">
                   <a
-                    class="transition-colors hover:text-[hsl(var(--foreground))/55] text-[hsl(var(--foreground))/80]"
+                    class="transition-colors hover:text-[var(--foreground)/55] text-[var(--foreground)/80]"
                     href="/my-events"
                     >My Event</a
                   >
                   <a
-                    class="transition-colors hover:text-[hsl(var(--foreground))/55] text-[hsl(var(--foreground))/80]"
+                    class="transition-colors hover:text-[var(--foreground)/55] text-[var(--foreground)/80]"
                     href="/create-event"
                     >Create Event</a
                   >
@@ -80,10 +76,14 @@
                 </div>
                 {% else %}
                 <div class="flex flex-row justify-center items-start p-4 gap-2">
-                  <button class="border rounded-lg px-2 py-1 hover:bg-white hover:text-black">
+                  <button
+                    class="border rounded-lg px-2 py-1 hover:bg-white hover:text-black"
+                  >
                     <a href="/login">Login</a>
                   </button>
-                  <button class="border rounded-lg px-2 py-1 hover:bg-white hover:text-black">
+                  <button
+                    class="border rounded-lg px-2 py-1 hover:bg-white hover:text-black"
+                  >
                     <a href="/signup">Signup</a>
                   </button>
                 </div>
