@@ -4,6 +4,10 @@ from flask_login import UserMixin
 class User(UserMixin):
     table = "user"
     col_count = 5
+    fillable=["firstName", "lastName", "email", "password"]
+
+    def unique(self):
+        return self.email
     
     def __init__(self, id, firstName, lastName, email, password):
         self.id = id
