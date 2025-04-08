@@ -11,14 +11,16 @@ users_bp = Blueprint('users', __name__) # Creates a Blueprint
 @users_bp.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-        name = request.form['firstName']
-        name = request.form['lastName']
+        firstName = request.form['firstName']
+        lastName = request.form['lastName']
         email = request.form['email']
         password = generate_password_hash(request.form['password'])
 
-        with DataBase() as db:
-            db.create_user(name, email, password)
-        return redirect( url_for('users.login') )
+        new_user = User(None, firstName, lastName, email, password)
+        if not DataBase(User).createIfNotExists(new_user):
+            return render_template('users/signup.html', error="Email already in use")
+
+        return redirect(url_for('users.login') )
     return render_template("user/signup.html")
 
 
@@ -37,13 +39,14 @@ def login():
 
                 return redirect(url_for('home') )
 
-            return render_template('session/login.html', error="Invalid credentials")
+            return render_template('users/login.html', error="Invalid credentials")
             
-        return render_template("session/login.html")
+        return render_template("users/login.html")
 
 
 @users_bp.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return redirect( url_for("users.login"))
+    return redirect(url_for("home"))
+        

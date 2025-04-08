@@ -57,12 +57,12 @@ class DataBase(DataBaseConnection):
         return [self._loadWithLogic(r) for r in data] if data else None
 
     def createIfNotExists(self, model):
-        if model.unique() and self.firstWhere(self.model.unique, model.unique()):
+        if self.model.unique and self.firstWhere(self.model.unique, model.unique_val()):
             return None
         else:
             with DataBaseConnection() as db:
                 vals = ",".join(f"'{e}'" for e in [getattr(model, a) for a in self.model.fillable])
                 cols = ",".join(self.model.fillable)
-                db.cursor.execute(f"INSERT INTO event ({cols}) VALUES ({vals})")
-        return
+                db.cursor.execute(f"INSERT INTO {self.model.table} ({cols}) VALUES ({vals})")
+        return True
         
