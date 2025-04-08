@@ -52,7 +52,9 @@ def create_event():
         date = request.form.get("date")
         location = request.form.get("location")
 
-        DataBase(Event).createIfNotExists(Event("0", "2",name, description, date, location)) # TODO: Fix not having to set id
+        new_event = Event(None, "2",name, description, date, location) # Todo: id nullable
+
+        DataBase(Event).createIfNotExists(new_event)
 
         return redirect(url_for("my_events"))
 
