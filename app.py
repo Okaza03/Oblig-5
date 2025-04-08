@@ -52,9 +52,9 @@ def create_event():
         date = request.form.get("date")
         location = request.form.get("location")
 
-        with DataBase(Event) as db:
-            db.create_event(name, description, date, location)
-        return redirect(url_for("event.my_events"))
+        DataBase(Event).createIfNotExists(Event("0", "2",name, description, date, location)) # TODO: Fix not having to set id
+
+        return redirect(url_for("my_events"))
 
     return render_template("event/create-event.html")
 
