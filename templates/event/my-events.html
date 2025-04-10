@@ -10,8 +10,8 @@
     >
       <div>
         <img
-          src="https://picsum.photos/300/100?random={{ event.id }}"
-          alt="event {{ event.id }}"
+          src="{{ event.getImage() }}"
+          alt="event{{ event.id }}"
           class="size-full object-contain"
         />
       </div>

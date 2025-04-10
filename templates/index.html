@@ -32,7 +32,7 @@
         >
           <div>
             <img
-              src="https://picsum.photos/300/100?random={{ event.id }}"
+		src="{{ event.getImage() }}"
               alt="event {{ event.id }}"
               class="size-full object-contain"
             />

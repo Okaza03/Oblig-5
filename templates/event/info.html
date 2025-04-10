@@ -1,7 +1,8 @@
 {% extends "base.html" %} {% block content %}
 <h1>Event List</h1>
 <ul>
-  <li>
+    <li>
+	<img src="{{ event.getImage() }}" />
     <strong>{{ event.name }}</strong><br />
     {{ event.description }}<br />
     {{ event.date }} — {{ event.location }}

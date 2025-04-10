@@ -75,8 +75,9 @@ class DataBase(DataBaseConnection):
                 vals = ",".join(f"'{e}'" for e in [getattr(model, a) for a in self.model.fillable])
                 cols = ",".join(self.model.fillable)
                 db.cursor.execute(f"INSERT INTO {self.model.table} ({cols}) VALUES ({vals})")
-        return True
-
+                setattr(model, "id", db.cursor.lastrowid)                
+        return model
+    
     def update(self, model):
         if self.model.unique and self.firstWhere(self.model.unique, getattr(model, self.model.unique), additional=f"AND id != {model.id}"):
             return None

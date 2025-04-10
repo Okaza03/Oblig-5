@@ -81,7 +81,7 @@
                     id="dropdown"
                   >
                     <img
-                      src="{{ url_for('static', filename='default_profile.jpg')}}"
+                      src="{{ current_user.getImage()  }}"
                       alt=""
                       class="size-8 border border-[var(--border)] rounded-full justify-center"
                     />

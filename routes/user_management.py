@@ -1,12 +1,18 @@
-from flask import render_template, redirect, url_for, request, Blueprint
+from flask import render_template, redirect, url_for, request, Blueprint, current_app
 from flask_login import logout_user, login_required, login_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from database import DataBase
 from models.User import User
+import os
+from werkzeug.utils import secure_filename
 
+app = current_app
+ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg", "gif"])
 
 user_bp = Blueprint("user", __name__)  # Creates a Blueprint
 
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @user_bp.route("/profile", methods=["GET", "POST"])
 @login_required
@@ -17,14 +23,30 @@ def profile():
         email = request.form["email"]
         password = request.form["password"]
         password_confirm = request.form["password_confirm"]
-
+        image = request.files.get("image")
+        
         errors = []
+        custom_filename = None
+        
+        if image:
+            file = image
+            if not file.filename == "":
+                if file and allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+
+                    name_part, ext = os.path.splitext(filename)
+                    custom_filename = f"user_{current_user.id}{ext}"
+
+                    file.save(
+                        os.path.join(app.config["UPLOAD_FOLDER"], custom_filename)
+                    )
+
 
         if not password == password_confirm:
             errors.append("Passwords do not match")
         if check_password_hash(current_user.password, password):
             updated_user = User(
-                current_user.id, firstName, lastName, email, current_user.password
+                current_user.id, firstName, lastName, email, current_user.password, custom_filename
             )
 
             if not DataBase(User).update(updated_user):
