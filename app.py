@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import LoginManager, login_required, current_user
 from database import DataBase
 from models.Event import Event
-from routes.user_management import user_bp
+from routes import event_bp, user_bp
 from models.User import User
 import os
 from werkzeug.utils import secure_filename
@@ -13,6 +13,7 @@ BASEDIR = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
 app.register_blueprint(user_bp)
+app.register_blueprint(event_bp)
 app.config["UPLOAD_FOLDER"] = os.path.join(BASEDIR, "static", "uploads")
 
 login_manager = LoginManager()
@@ -39,15 +40,6 @@ def home():
     )
 
 
-@app.route("/my-events")
-@login_required
-def my_events():
-    return render_template(
-        "event/my-events.html",
-        my_events=DataBase(Event).Where("user_id", current_user.id),
-    )
-
-
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -65,24 +57,26 @@ def create_event():
         new_event = Event(
             None, current_user.id, name, description, date, location
         )  # Todo: id nullable
-        
+
         if not DataBase(Event).createIfNotExists(new_event):
             return render_template(
                 "event/create-event.html", error="Something went wrong"
             )
-        
+
         if image:
             file = image
-            
+
             if not file.filename == "":
                 if file and allowed_file(file.filename):
                     filename = secure_filename(file.filename)
 
                     name_part, ext = os.path.splitext(filename)
                     custom_filename = f"{current_user.id}{ext}"
-                    
+
                     print(custom_filename)
-                    file.save(os.path.join(app.config["UPLOAD_FOLDER"], custom_filename))
+                    file.save(
+                        os.path.join(app.config["UPLOAD_FOLDER"], custom_filename)
+                    )
 
         return redirect(url_for("my_events"))
 
