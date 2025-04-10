@@ -2,8 +2,8 @@
 /.sahara
 /.mordi
 /venv
-static/uploads/*
 
 *~
 .env
 __pycache__/
+static/uploads/*
