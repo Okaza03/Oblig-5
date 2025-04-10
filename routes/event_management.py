@@ -21,7 +21,9 @@ def my_events():
 def info(event_id):
     db = DataBase(Event)
     current_event = db.firstWhere("id", event_id)
-    return render_template("event/info.html", event=current_event)
+    return render_template(
+        "event/info.html", event=current_event, title="{current_event.name} Info"
+    )
 
 
 @event_bp.route("/create-event", methods=["GET", "POST"])
@@ -38,4 +40,4 @@ def create_event():
 
         return redirect(url_for("event.my_events"))
 
-    return render_template("event/create-event.html")
+    return render_template("event/create-event.html", title="Create Event")
