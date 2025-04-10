@@ -12,128 +12,134 @@
   </head>
   <body class="bg-[var(--background)] text-[var(--primary)]">
     <main class="relative flex min-h-svh flex-col">
-      <div class="flex flex-1 flex-col container mx-auto min-h-screen">
-        <header
-          class="h-[8vh] sticky top-0 z-50 w-full bg-[var(--background)/95] backdrop-blur supports-[backdrop-filter]:bg-[var(--background)/60]"
-        >
-          <div class="">
-            <div class="container flex h-14 items-center gap-2 md:gap-4">
-              <div class="mr-4 flex">
-                <a class="mr-4 flex items-center gap-2 lg:mr-6" href="/"
-                  ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 256 256"
-                    class="h-6 w-6"
+      <div class="flex flex-1 flex-col mx-auto min-h-screen w-full">
+        <div class="">
+          <header
+            class="h-[8vh] sticky top-0 z-50 w-full bg-[var(--background)/95] backdrop-blur supports-[backdrop-filter]:bg-[var(--background)/60]"
+          >
+            <div class="container mx-auto">
+              <div class="container flex h-14 items-center gap-2 md:gap-4">
+                <div class="mr-4 flex">
+                  <a class="mr-4 flex items-center gap-2 lg:mr-6" href="/"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 256 256"
+                      class="h-6 w-6"
+                    >
+                      <rect width="256" height="256" fill="none"></rect>
+                      <line
+                        x1="208"
+                        y1="128"
+                        x2="128"
+                        y2="208"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="32"
+                      ></line>
+                      <line
+                        x1="192"
+                        y1="40"
+                        x2="40"
+                        y2="192"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="32"
+                      ></line></svg
+                    ><span class="hidden font-bold lg:inline-block"
+                      >Eventhub</span
+                    ></a
                   >
-                    <rect width="256" height="256" fill="none"></rect>
-                    <line
-                      x1="208"
-                      y1="128"
-                      x2="128"
-                      y2="208"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="32"
-                    ></line>
-                    <line
-                      x1="192"
-                      y1="40"
-                      x2="40"
-                      y2="192"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="32"
-                    ></line></svg
-                  ><span class="hidden font-bold lg:inline-block"
-                    >Eventhub</span
-                  ></a
+                  <nav class="flex items-center gap-4 text-sm xl:gap-6">
+                    <a
+                      class="transition-colors hover:text-[var(--foreground)/55] text-[var(--foreground)/80]"
+                      href="/my-events"
+                      >My Events</a
+                    >
+                    <a
+                      class="transition-colors hover:text-[var(--foreground)/55] text-[var(--foreground)/80]"
+                      href="/create-event"
+                      >Create Event</a
+                    >
+                    <a
+                      class="transition-colors hover:text-[var(--foreground)/55] text-[var(--foreground)/80]"
+                      href="/attending-events"
+                      >Attending events</a
+                    >
+                  </nav>
+                </div>
+                <div
+                  class="ml-auto flex items-center gap-2 md:flex-1 md:justify-end"
                 >
-                <nav class="flex items-center gap-4 text-sm xl:gap-6">
-                  <a
-                    class="transition-colors hover:text-[var(--foreground)/55] text-[var(--foreground)/80]"
-                    href="/my-events"
-                    >My Events</a
-                  >
-                  <a
-                    class="transition-colors hover:text-[var(--foreground)/55] text-[var(--foreground)/80]"
-                    href="/create-event"
-                    >Create Event</a
-				 >
-		  <a
-                    class="transition-colors hover:text-[var(--foreground)/55] text-[var(--foreground)/80]"
-                    href="/attending-events"
-                    >Attending events</a
-                  >
-                </nav>
-              </div>
-              <div
-                class="ml-auto flex items-center gap-2 md:flex-1 md:justify-end"
-              >
-                {% if current_user.is_authenticated %}
+                  {% if current_user.is_authenticated %}
 
-                <div class="relative inline-block text-left">
-                  <div
-                    class="flex flex-row justify-center items-center p-4 cursor-pointer"
-                    id="dropdown"
-                  >
-                    <img
-                      src="{{ url_for('static', filename='default_profile.jpg')}}"
-                      alt=""
-                      class="size-8 border border-[var(--border)] rounded-full justify-center"
-                    />
-                    <div class="flex flex-col pl-2">
-                      <p class="text-sm text-[var(--primary)]">
-                        {{ current_user.fullName() }}
-                      </p>
-                      <p class="text-[var(--muted-foreground)] text-xs">
-                        {{ current_user.email }}
-                      </p>
+                  <div class="relative inline-block text-left">
+                    <div
+                      class="flex flex-row justify-center items-center p-4 cursor-pointer"
+                      id="dropdown"
+                    >
+                      <img
+                        src="{{ url_for('static', filename='default_profile.jpg')}}"
+                        alt=""
+                        class="size-8 border border-[var(--border)] rounded-full justify-center"
+                      />
+                      <div class="flex flex-col pl-2">
+                        <p class="text-sm text-[var(--primary)]">
+                          {{ current_user.fullName() }}
+                        </p>
+                        <p class="text-[var(--muted-foreground)] text-xs">
+                          {{ current_user.email }}
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      class="absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-[var(--card)] z-10 hidden"
+                      id="menu"
+                    >
+                      <div class="py-1">
+                        <a
+                          href="{{ url_for('user.profile') }}"
+                          class="block px-4 py-2 text-sm text-[var(--primary-text)] hover:bg-[var(--muted)]"
+                        >
+                          Profile
+                        </a>
+                        <a
+                          href="{{ url_for('user.logout') }}"
+                          class="block px-4 py-2 text-sm text-[var(--primary-text)] hover:bg-[var(--muted)]"
+                        >
+                          Logout
+                        </a>
+                      </div>
                     </div>
                   </div>
-                  <div
-                    class="absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-[var(--card)] z-10 hidden"
-                    id="menu"
-                  >
-                    <div class="py-1">
-                      <a
-                        href="{{ url_for('user.profile') }}"
-                        class="block px-4 py-2 text-sm text-[var(--primary-text)] hover:bg-[var(--muted)]"
-                      >
-                        Profile
-                      </a>
-                      <a
-                        href="{{ url_for('user.logout') }}"
-                        class="block px-4 py-2 text-sm text-[var(--primary-text)] hover:bg-[var(--muted)]"
-                      >
-                        Logout
-                      </a>
-                    </div>
-                  </div>
-                </div>
 
-                {% else %}
-                <div class="flex flex-row justify-center items-start p-4 gap-2">
-                  <button
-                    class="border rounded-lg px-2 py-1 hover:bg-white hover:text-black"
+                  {% else %}
+                  <div
+                    class="flex flex-row justify-center items-start p-4 gap-2"
                   >
-                    <a href="{{ url_for('user.login')}}">Login</a>
-                  </button>
-                  <button
-                    class="border rounded-lg px-2 py-1 hover:bg-white hover:text-black"
-                  >
-                    <a href="{{ url_for('user.signup')}}">Signup</a>
-                  </button>
+                    <button
+                      class="border rounded-lg px-2 py-1 hover:bg-white hover:text-black"
+                    >
+                      <a href="{{ url_for('user.login')}}">Login</a>
+                    </button>
+                    <button
+                      class="border rounded-lg px-2 py-1 hover:bg-white hover:text-black"
+                    >
+                      <a href="{{ url_for('user.signup')}}">Signup</a>
+                    </button>
+                  </div>
+                  {% endif %}
                 </div>
-                {% endif %}
               </div>
             </div>
-          </div>
-        </header>
-        <main class="h-full">{% block content %} {% endblock %}</main>
+          </header>
+        </div>
+        <div class="container mx-auto">
+          <main class="h-full">{% block content %} {% endblock %}</main>
+        </div>
       </div>
       <footer></footer>
     </main>

@@ -1,34 +1,56 @@
 {% extends "base.html" %} {% block content %}
 
-<div class="container mt-4">
-  <div class="relative flex flex-row items-center w-full mb-4">
-    <h2
-      class="absolute left-1/2 transform -translate-x-1/2 text-center text-xl"
-    >
-      Event List
-    </h2>
-  </div>
-  <div class="flex w-full min-h-[87vh]">
+<div class="container">
+  <div class="flex w-full min-h-[92vh]">
     <div
-      class="w-1/6 h-[87vh] sticky top-0 p-4 border-r border-[var(--border)] overflow-y-auto"
+      class="w-1/6 h-[92vh] sticky top-0 p-4 border-r border-[var(--border)] overflow-y-auto"
     >
       <div class="flex flex-col justify-between">
         <label class="block text-sm mb-1">Sort By</label>
       </div>
       <div class="space-y-2">
-          <h2 class="text-xl font-bold">Filter</h2>
+        <h2 class="text-xl font-bold">Filter</h2>
       </div>
-      <form action="{{url_for("home")}}">
-	  <input type="text" name="q" />
+      <form action="{{url_for('home')}}">
+        <div class="flex flex-row">
+          <input
+            type="text"
+            name="q"
+            class="pl-6 bg-[var(--background)] border border-[var(--primary)] max-w-full rounded-lg mt-4"
+          /><i class="bi bi-search absolute translate-x-1 mt-4"></i>
+        </div>
+        <div class="flex flex-col gap-2 mt-2">
+          <label for="from">From</label>
+          <input
+            type="date"
+            name="from"
+            id=""
+            class="pl-6 bg-[var(--background)] border border-[var(--primary)] max-w-full rounded-lg"
+          />
+          <label for="to">To</label>
+          <input
+            type="date"
+            name="to"
+            id=""
+            class="pl-6 bg-[var(--background)] border border-[var(--primary)] max-w-full rounded-lg"
+          />
+        </div>
       </form>
     </div>
 
-    <div class="w-5/6 h-[87vh] overflow-y-scroll p-6">
+    <div class="w-5/6 h-[87vh] overflow-y-scroll p-6 no-scrollbar">
+      <div class="relative flex flex-row items-center w-full mb-4">
+        <h2
+          class="absolute left-1/2 transform -translate-x-1/2 text-center text-xl"
+        >
+          Event List
+        </h2>
+      </div>
       {% if events %}
       <div class="grid grid-cols-4 gap-4 pt-4">
         {% for event in events %}
         <div
-          class="rounded-xl border border-[var(--border)] shadow overflow-hidden h-fit"
+          class="rounded-xl border border-[var(--border)] shadow overflow-hidden max-h-fit"
         >
           <div>
             <img
