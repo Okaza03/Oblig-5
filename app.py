@@ -11,6 +11,7 @@ ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg", "gif"])
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
+
 app.secret_key = os.getenv("SECRET_KEY")
 app.register_blueprint(user_bp)
 app.register_blueprint(event_bp)
@@ -89,7 +90,7 @@ def create_event():
                         os.path.join(app.config["UPLOAD_FOLDER"], custom_filename)
                     )
 
-        return redirect(url_for("my_events"))
+        return redirect(url_for("events.my_events"))
 
     return render_template("event/create-event.html", title="Create Event")
 
