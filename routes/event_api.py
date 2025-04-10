@@ -21,6 +21,7 @@ def get_event(event_id):
             "description": event.description,
             "date": event.date,
             "location": event.location,
+            "image": event.getImage(),
             "user": {"fullName": event.user.fullName()},
         }
     )
@@ -46,6 +47,7 @@ def get_one_event_per_user():
                 "description": event.description,
                 "date": event.date,
                 "location": event.location,
+                "image": event.getImage(),
                 "user": {"fullName": event.user.fullName()},
             }
         )
