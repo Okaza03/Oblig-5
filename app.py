@@ -86,9 +86,6 @@ def create_event():
                     print(custom_filename)
                     file.save(os.path.join(app.config["UPLOAD_FOLDER"], custom_filename))
 
-        raise ValueError("testing")
-
-
         return redirect(url_for("my_events"))
 
     return render_template("event/create-event.html")
