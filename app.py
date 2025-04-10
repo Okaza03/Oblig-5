@@ -7,13 +7,13 @@ from models.User import User
 import os
 from werkzeug.utils import secure_filename
 
-UPLOAD_FOLDER = "/static/uploads"
 ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg", "gif"])
+BASEDIR = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
 app.register_blueprint(user_bp)
-app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+app.config["UPLOAD_FOLDER"] = os.path.join(BASEDIR, "static", "uploads")
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -60,30 +60,33 @@ def create_event():
         description = request.form.get("description")
         date = request.form.get("date")
         location = request.form.get("location")
+        image = request.files.get("image")
 
         new_event = Event(
-            None, "2", name, description, date, location
+            None, current_user.id, name, description, date, location
         )  # Todo: id nullable
-
+        
         if not DataBase(Event).createIfNotExists(new_event):
             return render_template(
                 "event/create-event.html", error="Something went wrong"
             )
 
+        print(os.path.join(app.config["UPLOAD_FOLDER"], "test"))
+        
+        if image:
+            file = image
+            
+            if not file.filename == "":
+                if file and allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
 
-        # check if the post request has the file part
-        if "file" not in request.files:
-            flash("No file part")
-            return redirect(request.url)
-        file = request.files["file"]
-        # if user does not select file, browser also
-        # submit a empty part without filename
-        if file.filename == "":
-            flash("No selected file")
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+                    name_part, ext = os.path.splitext(filename)
+                    custom_filename = f"{current_user.id}{ext}" 
+                    
+                    print(custom_filename)
+                    file.save(os.path.join(app.config["UPLOAD_FOLDER"], custom_filename))
+
+        raise ValueError("testing")
 
 
         return redirect(url_for("my_events"))

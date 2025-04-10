@@ -2,6 +2,7 @@
 /.sahara
 /.mordi
 /venv
+static/uploads/*
 
 *~
 .env
