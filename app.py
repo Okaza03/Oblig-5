@@ -8,7 +8,7 @@ import os
 from werkzeug.utils import secure_filename
 
 UPLOAD_FOLDER = "/path/to/the/uploads"
-ALLOWED_EXTENSIONS = set(["txt", "pdf", "png", "jpg", "jpeg", "gif"])
+ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg", "gif"])
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
