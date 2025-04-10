@@ -14,8 +14,16 @@ def my_events():
         my_events=DataBase(Event).Where("user_id", current_user.id),
     )
 
+@event_bp.route("/attending-events")
+@login_required
+def attending_events():
+    return render_template(
+        "event/attending-events.html",
+        my_events=DataBase(Event).Where("user_id", current_user.id),
+    )
 
-@event_bp.route("/<int:event_id>")
+
+@event_bp.route("/event/<int:event_id>")
 @login_required
 def info(event_id):
     db = DataBase(Event)
