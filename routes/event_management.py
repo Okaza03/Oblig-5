@@ -12,7 +12,9 @@ def my_events():
     return render_template(
         "event/my-events.html",
         my_events=DataBase(Event).Where("user_id", current_user.id),
+        title="My Events",
     )
+
 
 @event_bp.route("/attending-events")
 @login_required
@@ -20,6 +22,7 @@ def attending_events():
     return render_template(
         "event/attending-events.html",
         my_events=DataBase(Event).Where("user_id", current_user.id),
+        title="Attending Events",
     )
 
 
@@ -28,7 +31,9 @@ def attending_events():
 def info(event_id):
     db = DataBase(Event)
     current_event = db.firstWhere("id", event_id)
-    return render_template("event/info.html", event=current_event)
+    return render_template(
+        "event/info.html", event=current_event, title=f"{current_event.name} Info"
+    )
 
 
 @event_bp.route("/create-event", methods=["GET", "POST"])
@@ -45,4 +50,4 @@ def create_event():
 
         return redirect(url_for("event.my_events"))
 
-    return render_template("event/create-event.html")
+    return render_template("event/create-event.html", title="Create Event")
