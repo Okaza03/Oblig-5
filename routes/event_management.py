@@ -31,7 +31,7 @@ def info(event_id):
     db = DataBase(Event)
     current_event = db.firstWhere("id", event_id)
     return render_template(
-        "event/info.html", event=current_event, title="{current_event.name} Info"
+        "event/info.html", event=current_event, title=f"{current_event.name} Info"
     )
 
 
