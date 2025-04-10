@@ -19,8 +19,8 @@ def my_events():
 @login_required
 def info(event_id):
     db = DataBase(Event)
-    event = db.firstWhere("id", event_id)
-    return render_template("event/info.html", event=event)
+    current_event = db.firstWhere("id", event_id)
+    return render_template("event/info.html", event=current_event)
 
 
 @event_bp.route("/create-event", methods=["GET", "POST"])
