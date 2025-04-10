@@ -15,7 +15,7 @@ def my_events():
     )
 
 
-@event_bp.route("/<int:event_id>")
+@event_bp.route("/event/<int:event_id>")
 @login_required
 def info(event_id):
     db = DataBase(Event)

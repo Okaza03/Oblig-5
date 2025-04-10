@@ -36,7 +36,9 @@ def notFound(e):
 @app.route("/")
 def home():
     return render_template(
-        "index.html", events=DataBase(Event, load_with=(User, "id", "user_id")).all()
+        "index.html",
+        events=DataBase(Event, load_with=(User, "id", "user_id")).all(),
+        title="Home",
     )
 
 
