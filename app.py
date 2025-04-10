@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import LoginManager, login_required, current_user
 from database import DataBase
 from models.Event import Event
-from routes import event_bp, user_bp, event_api
+from routes import event_bp, user_bp
 from models.User import User
 import os
 from werkzeug.utils import secure_filename
@@ -14,7 +14,6 @@ app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
 app.register_blueprint(user_bp)
 app.register_blueprint(event_bp)
-app.register_blueprint(event_api)
 app.config["UPLOAD_FOLDER"] = os.path.join(BASEDIR, "static", "uploads")
 
 login_manager = LoginManager()
@@ -45,9 +44,11 @@ def home():
     else:
         events = DataBase(Event, load_with=(User, "id", "user_id")).all()
 
-    event_ids = [e.id for e in events]
-
-    return render_template("index.html", event_ids=event_ids, title="Home")
+    return render_template(
+        "index.html",
+        events=events,
+        title="Home",
+    )
 
 
 def allowed_file(filename):
@@ -65,12 +66,10 @@ def create_event():
         image = request.files.get("image")
 
         new_event = Event(
-            None, current_user.id, name, description, date, location, None
+            None, current_user.id, name, description, date, location
         )  # Todo: id nullable
 
-        created_event = DataBase(Event).createIfNotExists(new_event)
-
-        if not created_event:
+        if not DataBase(Event).createIfNotExists(new_event):
             return render_template(
                 "event/create-event.html", error="Something went wrong"
             )
@@ -83,17 +82,14 @@ def create_event():
                     filename = secure_filename(file.filename)
 
                     name_part, ext = os.path.splitext(filename)
-                    custom_filename = f"event_{created_event.id}{ext}"
+                    custom_filename = f"{current_user.id}{ext}"
 
+                    print(custom_filename)
                     file.save(
                         os.path.join(app.config["UPLOAD_FOLDER"], custom_filename)
                     )
 
-                    created_event.image = custom_filename
-
-                    DataBase(Event).update(created_event)
-
-        return redirect(url_for("events.my_events"))
+        return redirect(url_for("my_events"))
 
     return render_template("event/create-event.html", title="Create Event")
 

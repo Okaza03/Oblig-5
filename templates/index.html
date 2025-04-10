@@ -46,61 +46,78 @@
           Event List
         </h2>
       </div>
-      {% if event_ids %}
-      <div class="grid grid-cols-4 gap-4 pt-4">
-        {% for id in event_ids %}
-        <div
-          id="event-card-{{ id }}"
-          class="rounded-xl border border-[var(--border)] shadow overflow-hidden h-64"
-        >
-          <div class="text-gray-400 animate-pulse">
-            Loading Event #{{ id }}...
+      <div>
+        <div class="flex items-center justify-center h-screen" id="loading-overlay">
+          <div
+            id="loading-overlay"
+            class="fixed flex flex-col items-center justify-center z-50 text-center"
+          >
+            <div class="text-6xl animate-bounce">...</div>
+            <p class="text-gray-600 mt-4">Laster inn...</p>
           </div>
         </div>
-        {% endfor %}
-      </div>
+        {% if events %}
+        <div class="grid grid-cols-4 gap-4 pt-4 hidden" id="events-wrapper">
+          {% for event in events %}
+          <div
+            class="rounded-xl border border-[var(--border)] shadow overflow-hidden max-h-fit"
+          >
+            <div>
+              <img
+                src="https://picsum.photos/300/100?random={{ event.id }}"
+                alt="event {{ event.id }}"
+                class="size-full object-contain"
+              />
+            </div>
 
-      {% else %}
-      <div>No events found</div>
-      {% endif %}
+            <a href="{{ url_for('events.info', event_id=event.id) }}">
+              <div
+                class="px-6 py-2 flex flex-row items-center justify-between space-y-0"
+              >
+                <div class="relative flex flex-col items-start w-full mb-4">
+                  <p>{{ event.name }}</p>
+
+                  <p class="text-sm">{{ event.description }}</p>
+                </div>
+              </div>
+              <div class="p-6 pt-0">
+                <div class="flex flex-row justify-between">
+                  <div>
+                    <p class="text-xs text-[var(--muted-foreground)]">
+                      {{ event.date }}
+                    </p>
+                    <p class="text-xs text-[var(--muted-foreground)]">
+                      {{ event.location }}
+                    </p>
+                    <p class="text-xs text-[var(--muted-foreground)]">
+                      {{ event.user.fullName() }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div>No events found</div>
+        {% endif %}
+      </div>
     </div>
   </div>
 </div>
 
 <script>
-  // Fetch ONE TIME
-  fetch("/api/event/one-from-each-user")
-    .then((res) => res.json())
-    .then((events) => {
-      events.forEach((event) => {
-        const card = document.getElementById(`event-card-${event.id}`);
-        if (!card) return;
+  window.addEventListener("load", () => {
+    const loader = document.getElementById("loading-overlay");
+    const events = document.getElementById("events-wrapper");
 
-        card.innerHTML = `
-          <div class=""> 
-            <img src="https://picsum.photos/300/100?random=${event.id}" alt="event ${event.id}" class="size-full object-contain" />
-          </div>
-          <a href="/events/${event.id}" >
-            <div class="px-6 py-2 flex flex-row items-center justify-between space-y-0"> 
-              <div class="relative flex flex-col items-start w-full mb-4">
-                <p>${event.name}</h3>
-                <p class="text-sm">${event.description}</p>
-              </div>
-            </div>
-            <div class="p-6 pt-0">
-              <div class="flex flex-col justify-between">
-                <p class="text-xs text-[var(--muted-foreground)]">${event.date}</p>
-                <p class="text-xs text-[var(--muted-foreground)]">${event.location}</p>
-                <p class="text-xs text-[var(--muted-foreground)]">${event.user.fullName}</p>
-              </div>
-            </div>
-          </a>
-        `;
-      });
-    })
-    .catch((err) => {
-      console.error("Feil ved lasting av eventer:", err);
-    });
+    if (loader && events) {
+      loader.style.display = "none";
+      events.classList.remove("hidden");
+      loader.classList.add("hidden");
+    }
+  });
 </script>
 
 {% endblock %}
