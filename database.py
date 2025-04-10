@@ -9,13 +9,13 @@ class DataBase(DataBaseConnection):
         self.model = model
         self.load_with = load_with
 
-    def _buildQuery(self, query):
-        sql = ""
+    def _buildQuery(self, select_query, where_query=""):
+        sql_a = ""
         if self.load_with:
             self.foreign_model, self.foreign_col, self.foreign_key = self.load_with
-            sql = f"LEFT JOIN {self.foreign_model.table} as {self.foreign_model.table}_data ON {self.foreign_model.table}_data.{self.foreign_col} = {self.foreign_key}"
+            sql_a = f"LEFT JOIN {self.foreign_model.table} as {self.foreign_model.table}_data ON {self.foreign_model.table}_data.{self.foreign_col} = {self.foreign_key}"
 
-        return f"{query} {sql}"
+        return f"{select_query} {sql_a} {where_query}"
 
 
     def _loadWithLogic(self, row):
@@ -31,7 +31,7 @@ class DataBase(DataBaseConnection):
 
     def firstWhere(self, col: str, val: str, additional=""):
         with DataBaseConnection() as db:
-            sql = self._buildQuery(f"SELECT * FROM {self.model.table} WHERE {col} = '{val}' {additional}")
+            sql = self._buildQuery(f"SELECT * FROM {self.model.table}", f"WHERE {col} = '{val}' {additional}")
 
             db.cursor.execute(sql)
             data = db.cursor.fetchone()
@@ -40,7 +40,7 @@ class DataBase(DataBaseConnection):
 
     def Where(self, col: str, val: str):
         with DataBaseConnection() as db:
-            sql = self._buildQuery(f"SELECT * FROM {self.model.table} WHERE {col} = '{val}'")
+            sql = self._buildQuery(f"SELECT * FROM {self.model.table}", f"WHERE {col} = '{val}'")
 
             db.cursor.execute(sql)
             data = db.cursor.fetchall()
@@ -49,7 +49,9 @@ class DataBase(DataBaseConnection):
 
     def WhereLike(self, col: str, val: str):
         with DataBaseConnection() as db:
-            sql = self._buildQuery(f"SELECT * FROM {self.model.table} WHERE {col} like '%{val}%'")
+            sql = self._buildQuery(f"SELECT * FROM {self.model.table}", f"WHERE {col} like '%{val}%'")
+
+            print(sql)
 
             db.cursor.execute(sql)
             data = db.cursor.fetchall()

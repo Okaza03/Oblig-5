@@ -35,9 +35,16 @@ def notFound(e):
 # Routes
 @app.route("/")
 def home():
+    query = request.args.get("q")
+
+    if query:
+        events = DataBase(Event, load_with=(User, "id", "user_id")).WhereLike("name", query)
+    else:
+        events = DataBase(Event, load_with=(User, "id", "user_id")).all()
+
     return render_template(
         "index.html",
-        events=DataBase(Event, load_with=(User, "id", "user_id")).all(),
+        events=events,
         title="Home",
     )
 

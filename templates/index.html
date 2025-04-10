@@ -16,8 +16,11 @@
         <label class="block text-sm mb-1">Sort By</label>
       </div>
       <div class="space-y-2">
-        <h2 class="text-xl font-bold">Filter</h2>
+          <h2 class="text-xl font-bold">Filter</h2>
       </div>
+      <form action="{{url_for("home")}}">
+	  <input type="text" name="q" />
+      </form>
     </div>
 
     <div class="w-5/6 h-[87vh] overflow-y-scroll p-6">
