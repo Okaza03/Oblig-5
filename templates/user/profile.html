@@ -32,7 +32,7 @@
           </p>
         </div>
         <div class="p-6 pt-0">
-          <form>
+          <form action="{{ url_for("user.profile") }}" method="POST">
             <div class="space-y-6">
               <div class="flex flex-col items-center space-y-4">
                 <span
@@ -67,7 +67,7 @@
                         <polyline points="17 8 12 3 7 8"></polyline>
                         <line x1="12" x2="12" y1="3" y2="15"></line></svg
                       ><span>Change profile picture</span>
-                    </div>
+                    </div>		    
                     <input
                       class="h-10 w-full rounded-md border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-[var(--muted-foreground)]disabled:cursor-not-allowed disabled:opacity-50 hidden"
                       id="picture"
@@ -76,6 +76,11 @@
                   /></label>
                 </div>
               </div>
+	      {% if errors %}
+		  {% for error in errors %}
+		      <div class="text-red-500">{{error}}</div>
+		  {% endfor %}
+	      {% endif %}
               <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div class="space-y-2">
                   <label
@@ -86,7 +91,8 @@
                     class="flex h-10 w-full rounded-md border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-[var(--muted-foreground)]disabled:cursor-not-allowed disabled:opacity-50"
                     id="firstName"
                     placeholder="Enter your first name"
-                    value="{{ user.firstName }}"
+                       value="{{ user.firstName }}"
+		    name="firstName"
                   />
                 </div>
                 <div class="space-y-2">
@@ -98,7 +104,8 @@
                     class="flex h-10 w-full rounded-md border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-[var(--muted-foreground)]disabled:cursor-not-allowed disabled:opacity-50"
                     id="lastName"
                     placeholder="Enter your last name"
-                    value="{{ user.lastName }}"
+                       value="{{ user.lastName }}"
+		    name="lastName"
                   />
                 </div>
               </div>
@@ -114,7 +121,8 @@
                     id="email"
                     placeholder="Enter your email"
                     type="email"
-                    value="{{ user.email }}"
+                      value="{{ user.email }}"
+		    name="email"
                     readonly
                   /><button
                     class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium border border-[var(--border)] bg-[var(--background)] hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] h-10 px-4 py-2"
@@ -133,7 +141,8 @@
                   class="flex h-10 w-full rounded-md border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-[var(--muted-foreground)]disabled:cursor-not-allowed disabled:opacity-50"
                   id="password"
                   placeholder="••••••••"
-                  type="password"
+                     type="password"
+		  name="password"
                 />
               </div>
               <div class="space-y-2">
@@ -145,7 +154,8 @@
                   class="flex h-10 w-full rounded-md border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-[var(--muted-foreground)]disabled:cursor-not-allowed disabled:opacity-50"
                   id="confirmPassword"
                   placeholder="••••••••"
-                  type="password"
+                     type="password"
+		  name="password_confirm"
                 />
               </div>
             </div>

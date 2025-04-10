@@ -8,8 +8,32 @@ from models.User import User
 user_bp = Blueprint("user", __name__)  # Creates a Blueprint
 
 
-@user_bp.route("/profile")
+@user_bp.route("/profile", methods=["GET", "POST"])
+@login_required
 def profile():
+    if request.method == "POST":
+        firstName = request.form["firstName"]
+        lastName = request.form["lastName"]
+        email = request.form["email"]
+        password = request.form["password"]
+        password_confirm = request.form["password_confirm"]
+
+        errors = []
+
+        if not password == password_confirm:
+            errors.append("Passwords do not match")
+        if check_password_hash(current_user.password, password):
+            updated_user = User(current_user.id, firstName, lastName, email, current_user.password)
+        
+            if not DataBase(User).update(updated_user):
+                errors.append("Email already in use")
+            else:
+                login_user(updated_user)
+        else:
+            errors.append("Incorrect password")
+
+        return render_template("user/profile.html", user=current_user, errors=errors)
+    
     return render_template("user/profile.html", user=current_user)
 
 

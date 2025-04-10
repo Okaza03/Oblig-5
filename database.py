@@ -29,9 +29,9 @@ class DataBase(DataBaseConnection):
 
         return model
 
-    def firstWhere(self, col: str, val: str):
+    def firstWhere(self, col: str, val: str, additional=""):
         with DataBaseConnection() as db:
-            sql = self._buildQuery(f"SELECT * FROM {self.model.table} WHERE {col} = '{val}'")
+            sql = self._buildQuery(f"SELECT * FROM {self.model.table} WHERE {col} = '{val}' {additional}")
 
             db.cursor.execute(sql)
             data = db.cursor.fetchone()
@@ -41,6 +41,15 @@ class DataBase(DataBaseConnection):
     def Where(self, col: str, val: str):
         with DataBaseConnection() as db:
             sql = self._buildQuery(f"SELECT * FROM {self.model.table} WHERE {col} = '{val}'")
+
+            db.cursor.execute(sql)
+            data = db.cursor.fetchall()
+
+        return [self._loadWithLogic(r) for r in data] if data else None
+
+    def WhereLike(self, col: str, val: str):
+        with DataBaseConnection() as db:
+            sql = self._buildQuery(f"SELECT * FROM {self.model.table} WHERE {col} like '%{val}%'")
 
             db.cursor.execute(sql)
             data = db.cursor.fetchall()
@@ -64,5 +73,20 @@ class DataBase(DataBaseConnection):
                 vals = ",".join(f"'{e}'" for e in [getattr(model, a) for a in self.model.fillable])
                 cols = ",".join(self.model.fillable)
                 db.cursor.execute(f"INSERT INTO {self.model.table} ({cols}) VALUES ({vals})")
+        return True
+
+    def update(self, model):
+        if self.model.unique and self.firstWhere(self.model.unique, getattr(model, self.model.unique), additional=f"AND id != {model.id}"):
+            return None
+        else:
+            with DataBaseConnection() as db:
+                vals = [f"'{e}'" for e in [getattr(model, a) for a in self.model.fillable]]
+                cols = self.model.fillable
+
+                update = []
+                for i, col in enumerate(cols):
+                    update.append(f"{col} = {vals[i]}")
+                
+                db.cursor.execute(f"UPDATE {self.model.table} SET {','.join(update)} WHERE id = {model.id}")
         return True
         
