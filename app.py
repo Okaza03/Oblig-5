@@ -6,6 +6,7 @@ from routes import event_bp, user_bp
 from models.User import User
 import os
 from werkzeug.utils import secure_filename
+from files import allowed_file
 
 ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg", "gif"])
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
@@ -52,10 +53,6 @@ def home():
     )
 
 
-def allowed_file(filename):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
 @app.route("/create-event", methods=["GET", "POST"])
 @login_required
 def create_event():
@@ -67,10 +64,12 @@ def create_event():
         image = request.files.get("image")
 
         new_event = Event(
-            None, current_user.id, name, description, date, location
+            None, current_user.id, name, description, date, location, None
         )  # Todo: id nullable
 
-        if not DataBase(Event).createIfNotExists(new_event):
+        created_event = DataBase(Event).createIfNotExists(new_event)
+
+        if not created_event:
             return render_template(
                 "event/create-event.html", error="Something went wrong"
             )
@@ -83,12 +82,15 @@ def create_event():
                     filename = secure_filename(file.filename)
 
                     name_part, ext = os.path.splitext(filename)
-                    custom_filename = f"{current_user.id}{ext}"
+                    custom_filename = f"event_{created_event.id}{ext}"
 
-                    print(custom_filename)
                     file.save(
                         os.path.join(app.config["UPLOAD_FOLDER"], custom_filename)
                     )
+
+                    created_event.image = custom_filename
+
+                    DataBase(Event).update(created_event)
 
         return redirect(url_for("events.my_events"))
 

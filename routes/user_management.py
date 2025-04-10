@@ -5,14 +5,12 @@ from database import DataBase
 from models.User import User
 import os
 from werkzeug.utils import secure_filename
+from files import allowed_file
 
 app = current_app
-ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg", "gif"])
 
 user_bp = Blueprint("user", __name__)  # Creates a Blueprint
 
-def allowed_file(filename):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @user_bp.route("/profile", methods=["GET", "POST"])
 @login_required
