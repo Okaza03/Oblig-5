@@ -23,8 +23,10 @@ def profile():
         if not password == password_confirm:
             errors.append("Passwords do not match")
         if check_password_hash(current_user.password, password):
-            updated_user = User(current_user.id, firstName, lastName, email, current_user.password)
-        
+            updated_user = User(
+                current_user.id, firstName, lastName, email, current_user.password
+            )
+
             if not DataBase(User).update(updated_user):
                 errors.append("Email already in use")
             else:
@@ -33,8 +35,8 @@ def profile():
             errors.append("Incorrect password")
 
         return render_template("user/profile.html", user=current_user, errors=errors)
-    
-    return render_template("user/profile.html", user=current_user)
+
+    return render_template("user/profile.html", user=current_user, title="Profile")
 
 
 @user_bp.route("/signup", methods=["GET", "POST"])
@@ -50,7 +52,7 @@ def signup():
             return render_template("user/signup.html", error="Email already in use")
 
         return redirect(url_for("user.login"))
-    return render_template("user/signup.html")
+    return render_template("user/signup.html", title="Signup")
 
 
 @user_bp.route("/login", methods=["GET", "POST"])
@@ -71,7 +73,7 @@ def login():
 
         return render_template("user/login.html", error="Invalid credentials")
 
-    return render_template("user/login.html")
+    return render_template("user/login.html", title="Login")
 
 
 @user_bp.route("/logout")

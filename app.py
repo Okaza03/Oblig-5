@@ -36,7 +36,9 @@ def notFound(e):
 @app.route("/")
 def home():
     return render_template(
-        "index.html", events=DataBase(Event, load_with=(User, "id", "user_id")).all()
+        "index.html",
+        events=DataBase(Event, load_with=(User, "id", "user_id")).all(),
+        title="Home",
     )
 
 
@@ -80,7 +82,7 @@ def create_event():
 
         return redirect(url_for("my_events"))
 
-    return render_template("event/create-event.html")
+    return render_template("event/create-event.html", title="Create Event")
 
 
 if __name__ == "__main__":
