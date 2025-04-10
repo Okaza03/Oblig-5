@@ -12,6 +12,7 @@ def my_events():
     return render_template(
         "event/my-events.html",
         my_events=DataBase(Event).Where("user_id", current_user.id),
+        title="My Events",
     )
 
 

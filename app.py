@@ -82,7 +82,7 @@ def create_event():
 
         return redirect(url_for("my_events"))
 
-    return render_template("event/create-event.html")
+    return render_template("event/create-event.html", title="Create Event")
 
 
 if __name__ == "__main__":
