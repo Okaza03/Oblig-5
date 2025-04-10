@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import LoginManager, login_required, current_user
 from database import DataBase
 from models.Event import Event
-from routes import event_bp, user_bp
+from routes import event_bp, user_bp, event_api
 from models.User import User
 import os
 from werkzeug.utils import secure_filename
@@ -14,6 +14,7 @@ app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
 app.register_blueprint(user_bp)
 app.register_blueprint(event_bp)
+app.register_blueprint(event_api)
 app.config["UPLOAD_FOLDER"] = os.path.join(BASEDIR, "static", "uploads")
 
 login_manager = LoginManager()
@@ -38,15 +39,15 @@ def home():
     query = request.args.get("q")
 
     if query:
-        events = DataBase(Event, load_with=(User, "id", "user_id")).WhereLike("name", query)
+        events = DataBase(Event, load_with=(User, "id", "user_id")).WhereLike(
+            "name", query
+        )
     else:
         events = DataBase(Event, load_with=(User, "id", "user_id")).all()
 
-    return render_template(
-        "index.html",
-        events=events,
-        title="Home",
-    )
+    event_ids = [e.id for e in events]
+
+    return render_template("index.html", event_ids=event_ids, title="Home")
 
 
 def allowed_file(filename):

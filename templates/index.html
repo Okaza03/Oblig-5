@@ -46,54 +46,61 @@
           Event List
         </h2>
       </div>
-      {% if events %}
+      {% if event_ids %}
       <div class="grid grid-cols-4 gap-4 pt-4">
-        {% for event in events %}
+        {% for id in event_ids %}
         <div
-          class="rounded-xl border border-[var(--border)] shadow overflow-hidden max-h-fit"
+          id="event-card-{{ id }}"
+          class="rounded-xl border border-[var(--border)] shadow overflow-hidden h-64"
         >
-          <div>
-            <img
-              src="https://picsum.photos/300/100?random={{ event.id }}"
-              alt="event {{ event.id }}"
-              class="size-full object-contain"
-            />
+          <div class="text-gray-400 animate-pulse">
+            Loading Event #{{ id }}...
           </div>
-
-          <a href="{{ url_for('events.info', event_id=event.id) }}">
-            <div
-              class="px-6 py-2 flex flex-row items-center justify-between space-y-0"
-            >
-              <div class="relative flex flex-col items-start w-full mb-4">
-                <p>{{ event.name }}</p>
-
-                <p class="text-sm">{{ event.description }}</p>
-              </div>
-            </div>
-            <div class="p-6 pt-0">
-              <div class="flex flex-row justify-between">
-                <div>
-                  <p class="text-xs text-[var(--muted-foreground)]">
-                    {{ event.date }}
-                  </p>
-                  <p class="text-xs text-[var(--muted-foreground)]">
-                    {{ event.location }}
-                  </p>
-                  <p class="text-xs text-[var(--muted-foreground)]">
-                    {{ event.user.fullName() }}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </a>
         </div>
         {% endfor %}
       </div>
+
       {% else %}
       <div>No events found</div>
       {% endif %}
     </div>
   </div>
 </div>
+
+<script>
+  // Fetch ONE TIME
+  fetch("/api/event/one-from-each-user")
+    .then((res) => res.json())
+    .then((events) => {
+      events.forEach((event) => {
+        const card = document.getElementById(`event-card-${event.id}`);
+        if (!card) return;
+
+        card.innerHTML = `
+          <div class=""> 
+            <img src="https://picsum.photos/300/100?random=${event.id}" alt="event ${event.id}" class="size-full object-contain" />
+          </div>
+          <a href="/events/${event.id}" >
+            <div class="px-6 py-2 flex flex-row items-center justify-between space-y-0"> 
+              <div class="relative flex flex-col items-start w-full mb-4">
+                <p>${event.name}</h3>
+                <p class="text-sm">${event.description}</p>
+              </div>
+            </div>
+            <div class="p-6 pt-0">
+              <div class="flex flex-col justify-between">
+                <p class="text-xs text-[var(--muted-foreground)]">${event.date}</p>
+                <p class="text-xs text-[var(--muted-foreground)]">${event.location}</p>
+                <p class="text-xs text-[var(--muted-foreground)]">${event.user.fullName}</p>
+              </div>
+            </div>
+          </a>
+        `;
+      });
+    })
+    .catch((err) => {
+      console.error("Feil ved lasting av eventer:", err);
+    });
+</script>
 
 {% endblock %}
