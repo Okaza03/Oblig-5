@@ -70,8 +70,6 @@ def create_event():
             return render_template(
                 "event/create-event.html", error="Something went wrong"
             )
-
-        print(os.path.join(app.config["UPLOAD_FOLDER"], "test"))
         
         if image:
             file = image
@@ -81,7 +79,7 @@ def create_event():
                     filename = secure_filename(file.filename)
 
                     name_part, ext = os.path.splitext(filename)
-                    custom_filename = f"{current_user.id}{ext}" 
+                    custom_filename = f"{current_user.id}{ext}"
                     
                     print(custom_filename)
                     file.save(os.path.join(app.config["UPLOAD_FOLDER"], custom_filename))
