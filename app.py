@@ -39,15 +39,6 @@ def home():
     )
 
 
-@app.route("/my-events")
-@login_required
-def my_events():
-    return render_template(
-        "event/my-events.html",
-        my_events=DataBase(Event).Where("user_id", current_user.id),
-    )
-
-
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -70,7 +61,6 @@ def create_event():
                 "event/create-event.html", error="Something went wrong"
             )
 
-
         # check if the post request has the file part
         if "file" not in request.files:
             flash("No file part")
@@ -85,8 +75,7 @@ def create_event():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
 
-
-        return redirect(url_for("my_events"))
+        return redirect(url_for("events.my_events"))
 
     return render_template("event/create-event.html")
 
