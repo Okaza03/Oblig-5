@@ -26,7 +26,7 @@ def create_users(n=50):
         first_name = fake.first_name()
         last_name = fake.last_name()
         email = f"{first_name.lower()}.{last_name.lower()}@gmail.com"
-        password = generate_password_hash(fake.password())
+        password = generate_password_hash("test")
 
         user = {
             "id": user_id_counter,
