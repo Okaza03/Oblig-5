@@ -18,7 +18,13 @@
             action="{{ url_for('user.profile') }}"
             method="POST"
             enctype="multipart/form-data"
+            action='/'
+            autocomplete="off"
           >
+            <input type='text' name='username' id='email' placeholder='username'/>
+            <input type='password' name='password' id='password' placeholder='password'/>
+            <input type='submit' name='submit' value='login'/>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <div class="space-y-6">
               <div class="flex flex-col items-center space-y-4">
                 <span
