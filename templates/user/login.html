@@ -27,7 +27,11 @@
           Dont&apos;t have an account?
           <a href="{{ url_for('user.signup') }}" class="underline">Signup</a>
         </p>
-        <form method="POST" class="space-y-4">
+        <form method="POST" class="space-y-4" action='/' autocomplete="off">
+          <input type='text' name='username' id='email' placeholder='username'/>
+          <input type='password' name='password' id='password' placeholder='password'/>
+          <input type='submit' name='submit' value='login'/>
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <div>
             <input
               class="flex h-10 w-full rounded-md border px-3 py-2 text-sm ring-offset-[var(--background)] file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-[var(--foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-[var(--background)] border-[var(--border)] text-[var(--primary-text)] placeholder:text-[var(--placeholder)]"
