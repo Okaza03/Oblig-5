@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_login import LoginManager, login_required, current_user
+from flask import Flask, render_template, request, redirect, url_for, flash, Response, abort
+from flask_login import LoginManager, login_required, current_user, UserMixin, login_user, logout_user
+from flask_wtf.csrf import CSRFProtect
 from database import DataBase
 from models.Event import Event
 from models.User import User
@@ -17,6 +18,9 @@ app.register_blueprint(event_bp)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "user.login"
+
+csrf = CSRFProtect()
+csrf.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
