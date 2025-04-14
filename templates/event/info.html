@@ -19,7 +19,6 @@
       action="{{ url_for('events.info', event_id=event.id) }}"
       method="POST"
       class="mt-5"
-      action="/"
       autocomplete="off"
     >
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
