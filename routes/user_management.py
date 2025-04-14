@@ -20,11 +20,10 @@ def profile():
         lastName = request.form["lastName"]
         email = request.form["email"]
         password = request.form["password"]
-        password_confirm = request.form["password_confirm"]
         image = request.files.get("image")
         
         errors = []
-        custom_filename = None
+        custom_filename = current_user.image
         
         if image:
             file = image
@@ -40,8 +39,6 @@ def profile():
                     )
 
 
-        if not password == password_confirm:
-            errors.append("Passwords do not match")
         if check_password_hash(current_user.password, password):
             updated_user = User(
                 current_user.id, firstName, lastName, email, current_user.password, custom_filename

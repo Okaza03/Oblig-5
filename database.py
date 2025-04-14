@@ -8,6 +8,8 @@ class DataBase(DataBaseConnection):
     def __init__(self, model, load_with=None):
         self.model = model
         self.load_with = load_with
+        if load_with:
+            self.foreign_model, self.foreign_col, self.foreign_key = load_with
 
     def _buildQuery(self, select_query, where_query=""):
         sql_a = ""
@@ -72,7 +74,7 @@ class DataBase(DataBaseConnection):
             return None
         else:
             with DataBaseConnection() as db:
-                vals = ",".join(f"'{e}'" for e in [getattr(model, a) for a in self.model.fillable])
+                vals = ",".join(f"'{e}'" if e is not None else "NULL" for e in [getattr(model, a) for a in self.model.fillable])
                 cols = ",".join(self.model.fillable)
                 db.cursor.execute(f"INSERT INTO {self.model.table} ({cols}) VALUES ({vals})")
                 setattr(model, "id", db.cursor.lastrowid)                
@@ -92,4 +94,20 @@ class DataBase(DataBaseConnection):
                 
                 db.cursor.execute(f"UPDATE {self.model.table} SET {','.join(update)} WHERE id = {model.id}")
         return True
-        
+
+    def hasMany(self, model, mtm, m_col, f_col):
+        with DataBaseConnection() as db:
+            sql = f"SELECT {self.model.table}.* FROM {self.model.table} where {self.model.table}.id in (select {f_col} from {mtm} where {m_col} = {model.id})"
+
+            db.cursor.execute(sql)
+            data = db.cursor.fetchall()
+
+        return [self._loadWithLogic(r) for r in data] if data else None
+
+    def insert_relation(self, model, mtm, m_col, f_col):
+        with DataBaseConnection() as db:
+            db.cursor.execute(f"INSERT INTO {mtm} ({m_col}, {f_col}) VALUES ({self.model.id}, {model.id})")
+
+    def delete_relation(self, model, mtm, m_col, f_col):
+        with DataBaseConnection() as db:
+            db.cursor.execute(f"DELETE FROM {mtm} WHERE {m_col} = '{self.model.id}' AND {f_col} = '{model.id}'")        

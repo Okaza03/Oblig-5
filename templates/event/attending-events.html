@@ -4,10 +4,11 @@
   {% if my_events %}
   <div>List of your events</div>
   <div class="grid grid-cols-4 gap-4 pt-4">
-    {% for event in my_events %}
-    <div
-      class="rounded-xl border border-[var(--border)] shadow overflow-hidden h-fit"
-    >
+      {% for event in my_events %}
+	  <a href="{{ url_for('events.info', event_id=event.id) }}">
+	      <div
+		  class="rounded-xl border border-[var(--border)] shadow overflow-hidden h-fit"
+	      >
       <div>
         <img
           src="{{ event.getImage() }}"
@@ -37,7 +38,8 @@
           </div>
         </div>
       </div>
-    </div>
+	      </div>
+	      </a>
     {% endfor %}
   </div>
   {% else %}

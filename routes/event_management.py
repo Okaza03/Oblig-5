@@ -1,10 +1,13 @@
-from flask import render_template, redirect, url_for, request, Blueprint
+from flask import render_template, redirect, url_for, request, Blueprint, current_app
 from flask_login import login_required, current_user
+from werkzeug.utils import secure_filename
+from files import allowed_file
 from database import DataBase
 from models.Event import Event
+import os
 
+app = current_app
 event_bp = Blueprint("events", __name__)
-
 
 @event_bp.route("/my-events")
 @login_required
@@ -15,23 +18,77 @@ def my_events():
         title="My Events",
     )
 
+@event_bp.route("/create-event", methods=["GET", "POST"])
+@login_required
+def create_event():
+    if request.method == "POST":
+        name = request.form.get("name")
+        description = request.form.get("description")
+        date = request.form.get("date")
+        location = request.form.get("location")
+        image = request.files.get("image")
+
+        new_event = Event(
+            None, current_user.id, name, description, date, location, None
+        )  # Todo: id nullable
+
+        created_event = DataBase(Event).createIfNotExists(new_event)
+
+        if not created_event:
+            return render_template(
+                "event/create-event.html", error="Something went wrong"
+            )
+
+        if image:
+            file = image
+
+            if not file.filename == "":
+                if file and allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+
+                    name_part, ext = os.path.splitext(filename)
+                    custom_filename = f"event_{created_event.id}{ext}"
+
+                    file.save(
+                        os.path.join(app.config["UPLOAD_FOLDER"], custom_filename)
+                    )
+
+                    created_event.image = custom_filename
+
+                    DataBase(Event).update(created_event)
+
+        return redirect(url_for("events.my_events"))
+
+    return render_template("event/create-event.html", title="Create Event")
+
 
 @event_bp.route("/attending-events")
 @login_required
 def attending_events():
     return render_template(
         "event/attending-events.html",
-        my_events=DataBase(Event).Where("user_id", current_user.id),
+        my_events=current_user.events(),
         title="Attending Events",
     )
 
 
-@event_bp.route("/event/<int:event_id>")
+@event_bp.route("/event/<int:event_id>", methods=["GET", "POST"])
 @login_required
 def info(event_id):
+    if request.method == "POST" and request.form.get("action") == "add":
+        event = DataBase(Event).firstWhere("id", event_id)
+        current_user.attends(event)
+    if request.method == "POST" and request.form.get("action") == "remove":
+        event = DataBase(Event).firstWhere("id", event_id)
+        current_user.notAttends(event)
+    
     db = DataBase(Event)
     current_event = db.firstWhere("id", event_id)
+
+    users = current_event.users()
+    attending = any(user.id == current_user.id for user in users) if users else False
+    
     return render_template(
-        "event/info.html", event=current_event, title=f"{current_event.name} Info"
+        "event/info.html", event=current_event, manager=current_event.manager(), users=users, attending=attending, title=f"{current_event.name} Info"
     )
 
