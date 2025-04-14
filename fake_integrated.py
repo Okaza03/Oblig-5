@@ -1,4 +1,3 @@
-import os
 from database import DataBase
 from faker import Faker
 from werkzeug.security import generate_password_hash

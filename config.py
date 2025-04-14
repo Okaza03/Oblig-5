@@ -2,11 +2,19 @@ from flask import Flask
 from flask_mail import Mail
 from routes import event_bp, user_bp
 from flask_mail import Mail, Message
-from flask_login import LoginManager, login_required, current_user
-from flask import render_template, request
+from flask_login import (
+    LoginManager,
+    login_required,
+    logout_user,
+    login_user,
+    current_user,
+)
+from flask import render_template, redirect, url_for, request, Blueprint, current_app
 from flask_wtf.csrf import CSRFProtect
-
+from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
 import os
+from files import allowed_file
 
 
 app = Flask(__name__)

@@ -1,11 +1,23 @@
-from flask import render_template, redirect, url_for, request, Blueprint, current_app
-from flask_login import logout_user, login_required, login_user, current_user
-from werkzeug.security import generate_password_hash, check_password_hash
+from config import (
+    render_template,
+    redirect,
+    url_for,
+    login_required,
+    login_user,
+    logout_user,
+    generate_password_hash,
+    check_password_hash,
+    secure_filename,
+    allowed_file,
+    request,
+    current_app,
+    current_user,
+    Blueprint,
+    os,
+)
 from database import DataBase
 from models.User import User
-import os
-from werkzeug.utils import secure_filename
-from files import allowed_file
+
 
 app = current_app
 
@@ -21,10 +33,10 @@ def profile():
         email = request.form["email"]
         password = request.form["password"]
         image = request.files.get("image")
-        
+
         errors = []
         custom_filename = current_user.image
-        
+
         if image:
             file = image
             if not file.filename == "":
@@ -38,10 +50,14 @@ def profile():
                         os.path.join(app.config["UPLOAD_FOLDER"], custom_filename)
                     )
 
-
         if check_password_hash(current_user.password, password):
             updated_user = User(
-                current_user.id, firstName, lastName, email, current_user.password, custom_filename
+                current_user.id,
+                firstName,
+                lastName,
+                email,
+                current_user.password,
+                custom_filename,
             )
 
             if not DataBase(User).update(updated_user):
