@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_mail import Mail
+from flask_mail import Mail, Message
 from flask_login import (
     LoginManager,
     login_required,
@@ -13,12 +13,11 @@ from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 from files import allowed_file
-from mailbox import Message
 
 
 app = Flask(__name__)
 app.config["MAIL_SERVER"] = os.getenv("MAIL_SERVER")
-app.config["MAIL_PORT"] = os.getenv("MAIL_PORT")
+app.config["MAIL_PORT"] = 465
 app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")
 app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD")
 app.config["MAIL_USE_TLS"] = False
