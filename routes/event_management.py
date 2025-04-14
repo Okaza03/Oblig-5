@@ -89,15 +89,18 @@ def attending_events():
 @event_bp.route("/event/<int:event_id>", methods=["GET", "POST"])
 @login_required
 def info(event_id):
-    if request.method == "POST" and request.form.get("action") == "add":
-        event = DataBase(Event).firstWhere("id", event_id)
-        current_user.attends(event)
-    if request.method == "POST" and request.form.get("action") == "remove":
-        event = DataBase(Event).firstWhere("id", event_id)
-        current_user.notAttends(event)
-
     db = DataBase(Event)
     current_event = db.firstWhere("id", event_id)
+
+    if request.method == "POST":
+        action = request.form.get("action")
+
+        if action == "add":
+            current_user.attends(current_event)
+            send_confirmation_email(current_user.email, current_event.name)
+
+        elif action == "remove":
+            current_user.notAttends(current_event)
 
     users = current_event.users()
     attending = any(user.id == current_user.id for user in users) if users else False
@@ -118,9 +121,7 @@ def send_confirmation_email(user_email, event_name):
         sender="eventhub_management@gmail.com",
         recipients=[user_email],
     )
-    msg.body = (
-        f"Hello!\n\nYou are now attending {event_name}.\n\nWe are excited to have you!"
-    )
+    msg.html = render_template("emails/confirmation.html", event_name=event_name)
 
     try:
         mail.send(msg)
