@@ -4,6 +4,9 @@ from models.Event import Event
 from models.User import User
 
 
+
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return DataBase(User).firstWhere("id", user_id)
