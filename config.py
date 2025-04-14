@@ -4,7 +4,10 @@ from routes import event_bp, user_bp
 from flask_mail import Mail, Message
 from flask_login import LoginManager, login_required, current_user
 from flask import render_template, request
+from flask_wtf.csrf import CSRFProtect
+
 import os
+
 
 app = Flask(__name__)
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
@@ -26,3 +29,6 @@ app.register_blueprint(event_bp)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "user.login"
+
+csrf = CSRFProtect()
+csrf.init_app(app)
