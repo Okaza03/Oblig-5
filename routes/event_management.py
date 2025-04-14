@@ -1,13 +1,24 @@
-from flask import render_template, redirect, url_for, request, Blueprint, current_app
-from flask_login import login_required, current_user
-from werkzeug.utils import secure_filename
+from config import (
+    app,
+    current_app,
+    request,
+    current_user,
+    render_template,
+    redirect,
+    url_for,
+    login_required,
+    secure_filename,
+    Blueprint,
+    os,
+)
+
 from files import allowed_file
 from database import DataBase
 from models.Event import Event
-import os
 
 app = current_app
 event_bp = Blueprint("events", __name__)
+
 
 @event_bp.route("/my-events")
 @login_required
@@ -17,6 +28,7 @@ def my_events():
         my_events=DataBase(Event).Where("user_id", current_user.id),
         title="My Events",
     )
+
 
 @event_bp.route("/create-event", methods=["GET", "POST"])
 @login_required
@@ -81,14 +93,18 @@ def info(event_id):
     if request.method == "POST" and request.form.get("action") == "remove":
         event = DataBase(Event).firstWhere("id", event_id)
         current_user.notAttends(event)
-    
+
     db = DataBase(Event)
     current_event = db.firstWhere("id", event_id)
 
     users = current_event.users()
     attending = any(user.id == current_user.id for user in users) if users else False
-    
-    return render_template(
-        "event/info.html", event=current_event, manager=current_event.manager(), users=users, attending=attending, title=f"{current_event.name} Info"
-    )
 
+    return render_template(
+        "event/info.html",
+        event=current_event,
+        manager=current_event.manager(),
+        users=users,
+        attending=attending,
+        title=f"{current_event.name} Info",
+    )
