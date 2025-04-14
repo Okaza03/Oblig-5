@@ -1,7 +1,5 @@
 from flask import Flask
 from flask_mail import Mail
-from routes import event_bp, user_bp
-from flask_mail import Mail, Message
 from flask_login import (
     LoginManager,
     login_required,
@@ -31,12 +29,12 @@ app.config["UPLOAD_FOLDER"] = os.path.join(
     os.path.abspath(os.path.dirname(__file__)), "static", "uploads"
 )
 
-app.register_blueprint(user_bp)
-app.register_blueprint(event_bp)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "user.login"
+
+mail = Mail(app)
 
 csrf = CSRFProtect()
 csrf.init_app(app)

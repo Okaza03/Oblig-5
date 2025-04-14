@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-  <form action='/' method='POST' autocomplete="off">
-    <input type='text' name='username' id='email' placeholder='username'/>
-    <input type='password' name='password' id='password' placeholder='password'/>
-    <input type='submit' name='submit' value='login'/>
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <form action="/" method="POST" autocomplete="off">
+    <input type="text" name="username" id="email" placeholder="username" />
+    <input
+      type="password"
+      name="password"
+      id="password"
+      placeholder="password"
+    />
+    <input type="submit" name="submit" value="login" />
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
   </form>
   <head>
     <meta charset="UTF-8" />
@@ -75,7 +80,7 @@
                       class="transition-colors hover:text-[var(--foreground)/55] text-[var(--foreground)/80]"
                       href="/create-event"
                       >Create Event</a
-				   >
+                    >
                   </nav>
                 </div>
                 <div
