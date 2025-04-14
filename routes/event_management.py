@@ -10,6 +10,8 @@ from config import (
     secure_filename,
     Blueprint,
     os,
+    mail,
+    Message,
 )
 
 from files import allowed_file
@@ -108,3 +110,20 @@ def info(event_id):
         attending=attending,
         title=f"{current_event.name} Info",
     )
+
+
+def send_confirmation_email(user_email, event_name):
+    msg = Message(
+        subject="Event attendance",
+        sender="eventhub_management@gmail.com",
+        recipients=[user_email],
+    )
+    msg.body = (
+        f"Hello!\n\nYou are now attending {event_name}.\n\nWe are excited to have you!"
+    )
+
+    try:
+        mail.send(msg)
+
+    except Exception as e:
+        print("Error:", e)

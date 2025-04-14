@@ -17,21 +17,23 @@ class DataBase(DataBaseConnection):
 
         return f"{select_query} {sql_a} {where_query}"
 
-
     def _loadWithLogic(self, row):
         model = self.model(*row[: self.model.col_count])
         if self.load_with:
             setattr(
                 model,
                 self.foreign_model.table,
-                self.foreign_model(*row[self.foreign_model.col_count+1:]),
+                self.foreign_model(*row[self.foreign_model.col_count + 1 :]),
             )
 
         return model
 
     def firstWhere(self, col: str, val: str, additional=""):
         with DataBaseConnection() as db:
-            sql = self._buildQuery(f"SELECT * FROM {self.model.table}", f"WHERE {col} = '{val}' {additional}")
+            sql = self._buildQuery(
+                f"SELECT * FROM {self.model.table}",
+                f"WHERE {col} = '{val}' {additional}",
+            )
 
             db.cursor.execute(sql)
             data = db.cursor.fetchone()
@@ -40,7 +42,9 @@ class DataBase(DataBaseConnection):
 
     def Where(self, col: str, val: str):
         with DataBaseConnection() as db:
-            sql = self._buildQuery(f"SELECT * FROM {self.model.table}", f"WHERE {col} = '{val}'")
+            sql = self._buildQuery(
+                f"SELECT * FROM {self.model.table}", f"WHERE {col} = '{val}'"
+            )
 
             db.cursor.execute(sql)
             data = db.cursor.fetchall()
@@ -49,7 +53,9 @@ class DataBase(DataBaseConnection):
 
     def WhereLike(self, col: str, val: str):
         with DataBaseConnection() as db:
-            sql = self._buildQuery(f"SELECT * FROM {self.model.table}", f"WHERE {col} like '%{val}%'")
+            sql = self._buildQuery(
+                f"SELECT * FROM {self.model.table}", f"WHERE {col} like '%{val}%'"
+            )
 
             print(sql)
 
@@ -68,29 +74,44 @@ class DataBase(DataBaseConnection):
         return [self._loadWithLogic(r) for r in data] if data else None
 
     def createIfNotExists(self, model):
-        if self.model.unique and self.firstWhere(self.model.unique, getattr(model, self.model.unique)):
+        if self.model.unique and self.firstWhere(
+            self.model.unique, getattr(model, self.model.unique)
+        ):
             return None
         else:
             with DataBaseConnection() as db:
-                vals = ",".join(f"'{e}'" if e is not None else "NULL" for e in [getattr(model, a) for a in self.model.fillable])
+                vals = ",".join(
+                    f"'{e}'" if e is not None else "NULL"
+                    for e in [getattr(model, a) for a in self.model.fillable]
+                )
                 cols = ",".join(self.model.fillable)
-                db.cursor.execute(f"INSERT INTO {self.model.table} ({cols}) VALUES ({vals})")
-                setattr(model, "id", db.cursor.lastrowid)                
+                db.cursor.execute(
+                    f"INSERT INTO {self.model.table} ({cols}) VALUES ({vals})"
+                )
+                setattr(model, "id", db.cursor.lastrowid)
         return model
-    
+
     def update(self, model):
-        if self.model.unique and self.firstWhere(self.model.unique, getattr(model, self.model.unique), additional=f"AND id != {model.id}"):
+        if self.model.unique and self.firstWhere(
+            self.model.unique,
+            getattr(model, self.model.unique),
+            additional=f"AND id != {model.id}",
+        ):
             return None
         else:
             with DataBaseConnection() as db:
-                vals = [f"'{e}'" for e in [getattr(model, a) for a in self.model.fillable]]
+                vals = [
+                    f"'{e}'" for e in [getattr(model, a) for a in self.model.fillable]
+                ]
                 cols = self.model.fillable
 
                 update = []
                 for i, col in enumerate(cols):
                     update.append(f"{col} = {vals[i]}")
-                
-                db.cursor.execute(f"UPDATE {self.model.table} SET {','.join(update)} WHERE id = {model.id}")
+
+                db.cursor.execute(
+                    f"UPDATE {self.model.table} SET {','.join(update)} WHERE id = {model.id}"
+                )
         return True
 
     def hasMany(self, model, mtm, m_col, f_col):
@@ -104,8 +125,12 @@ class DataBase(DataBaseConnection):
 
     def insert_relation(self, model, mtm, m_col, f_col):
         with DataBaseConnection() as db:
-            db.cursor.execute(f"INSERT INTO {mtm} ({m_col}, {f_col}) VALUES ({self.model.id}, {model.id})")
+            db.cursor.execute(
+                f"INSERT INTO {mtm} ({m_col}, {f_col}) VALUES ({self.model.id}, {model.id})"
+            )
 
     def delete_relation(self, model, mtm, m_col, f_col):
         with DataBaseConnection() as db:
-            db.cursor.execute(f"DELETE FROM {mtm} WHERE {m_col} = '{self.model.id}' AND {f_col} = '{model.id}'")        
+            db.cursor.execute(
+                f"DELETE FROM {mtm} WHERE {m_col} = '{self.model.id}' AND {f_col} = '{model.id}'"
+            )

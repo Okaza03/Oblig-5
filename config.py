@@ -13,15 +13,16 @@ from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 from files import allowed_file
+from mailbox import Message
 
 
 app = Flask(__name__)
-app.config["MAIL_SERVER"] = "smtp.gmail.com"
-app.config["MAIL_PORT"] = 465
-app.config["MAIL_USERNAME"] = "your_mail@gmail.com"
-app.config["MAIL_PASSWORD"] = "your_email_password"
+app.config["MAIL_SERVER"] = os.getenv("MAIL_SERVER")
+app.config["MAIL_PORT"] = os.getenv("MAIL_PORT")
+app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")
+app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD")
 app.config["MAIL_USE_TLS"] = False
-app.config["MAIL_USE_SSL"] = Truemail = Mail(app)
+app.config["MAIL_USE_SSL"] = True
 
 
 app.secret_key = os.getenv("SECRET_KEY")
