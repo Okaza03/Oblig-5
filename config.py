@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, flash
 from flask_mail import Mail, Message
 from flask_login import (
     LoginManager,

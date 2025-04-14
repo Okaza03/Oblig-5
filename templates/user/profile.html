@@ -18,10 +18,10 @@
             action="{{ url_for('user.profile') }}"
             method="POST"
             enctype="multipart/form-data"
-            action='/'
+            action="/"
             autocomplete="off"
           >
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
             <div class="space-y-6">
               <div class="flex flex-col items-center space-y-4">
                 <span
@@ -114,15 +114,34 @@
                     value="{{ user.email }}"
                     name="email"
                     readonly
-                  /><button
-                    class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium border border-[var(--border)] bg-[var(--background)] hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] h-10 px-4 py-2"
-                    type="button"
+                  />
+                  {% if not user.email_verified %}
+                  <a href="{{ url_for('user.verify_email_request') }}">
+                    <button
+                      class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium border border-[var(--border)] bg-[var(--background)] hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] h-10 px-4 py-2"
+                      type="button"
+                    >
+                      Verify Email
+                    </button>
+                  </a>
+                  {% else %}
+                  <span class="text-green-600 text-sm mt-2 w-2/12"
+                    >Your email is verified</span
                   >
-                    Verify Email
-                  </button>
+                  {% endif %}
                 </div>
+                {% with messages =
+                get_flashed_messages(category_filter=['email'],
+                with_categories=true) %} {% if messages %} {% for category,
+                message in messages %}
+                <p
+                  class="text-sm mt-2 {% if category == 'success' or category == 'email' %}text-green-600{% else %}text-red-600{% endif %}"
+                >
+                  {{ message }}
+                </p>
+                {% endfor %} {% endif %} {% endwith %}
               </div>
-              <div class="flex space-y-2">
+              <div class="flex flex-col space-y-2">
                 <label
                   class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                   for="password"
@@ -130,16 +149,29 @@
                 ><input
                   class="flex h-10 w-full rounded-md border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-[var(--muted-foreground)]disabled:cursor-not-allowed disabled:opacity-50"
                   id="password"
-                  placeholder="••••••••"
+                  placeholder="Enter current password"
                   type="password"
                   name="password"
                   required
-                /><button
-                  class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium border border-[var(--border)] bg-[var(--background)] hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] h-10 px-4 py-2"
-                  type="button"
+                />
+                <a href="{{ url_for('user.send_password_reset') }}">
+                  <button
+                    class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium border border-[var(--border)] bg-[var(--background)] hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] h-10 px-4 py-2"
+                    type="button"
+                  >
+                    Change password
+                  </button>
+                </a>
+                {% with messages =
+                get_flashed_messages(category_filter=['password'],
+                with_categories=true) %} {% if messages %} {% for category,
+                message in messages %}
+                <p
+                  class="text-sm mt-2 {% if category == 'success' or category == 'password' %}text-green-600{% else %}text-red-600{% endif %}"
                 >
-                  Change password
-                </button>
+                  {{ message }}
+                </p>
+                {% endfor %} {% endif %} {% endwith %}
               </div>
             </div>
             <div class="mt-6">

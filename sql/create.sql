@@ -27,11 +27,12 @@ CREATE TABLE IF NOT EXISTS `eventhub`.`user` (
   `email` VARCHAR(45) NULL DEFAULT NULL,
   `password` VARCHAR(255) NULL DEFAULT NULL,
   `image` VARCHAR(45) NULL DEFAULT NULL,
+  `email_verified` TINYINT(1) NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
+AUTO_INCREMENT = 103
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -47,7 +48,6 @@ CREATE TABLE IF NOT EXISTS `eventhub`.`event` (
   `date` DATETIME NULL DEFAULT NULL,
   `location` VARCHAR(45) NULL DEFAULT NULL,
   `image` VARCHAR(45) NULL DEFAULT NULL,
-
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
   INDEX `user_id_idx` (`user_id` ASC) VISIBLE,
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `eventhub`.`event` (
     FOREIGN KEY (`user_id`)
     REFERENCES `eventhub`.`user` (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
+AUTO_INCREMENT = 35
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
