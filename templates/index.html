@@ -49,18 +49,17 @@
       <div>
         <div
           class="flex items-center justify-center h-screen"
-          id="loading-overlay"
+          id="loading-overlay-events"
         >
           <div
-            id="loading-overlay"
-            class="fixed flex flex-col items-center justify-center z-50 text-center"
+              class="fixed flex flex-col items-center justify-center z-50 text-center"
           >
             <div class="text-6xl animate-bounce">...</div>
-            <p class="text-gray-600 mt-4">Laster inn...</p>
+            <p class="text-gray-600 mt-4">Loading...</p>
           </div>
         </div>
         {% if events %}
-        <div class="grid grid-cols-4 gap-4 pt-4 hidden" id="events-wrapper">
+        <div class="grid grid-cols-4 gap-4 pt-4 hidden" id="loading-events">
           {% for event in events %}
           <div
             class="rounded-xl border border-[var(--border)] shadow overflow-hidden max-h-fit"
@@ -112,8 +111,8 @@
 
 <script>
   window.addEventListener("load", () => {
-    const loader = document.getElementById("loading-overlay");
-    const events = document.getElementById("events-wrapper");
+    const loader = document.getElementById("loading-overlay-events");
+    const events = document.getElementById("loading-events");
 
     if (loader && events) {
       loader.style.display = "none";

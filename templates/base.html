@@ -75,43 +75,50 @@
                   class="ml-auto flex items-center gap-2 md:flex-1 md:justify-end"
                 >
                   {% if current_user.is_authenticated %}
-
                   <div class="relative inline-block text-left">
                     <div
-                      class="flex flex-row justify-center items-center p-4 cursor-pointer"
-                      id="dropdown"
+                      class="w-full justify-center items-center flex flex-col"
+                      id="loading-overlay-names"
                     >
-                      <img
-                        src="{{ current_user.getImage() }}"
-                        alt=""
-                        class="size-8 border border-[var(--border)] rounded-full justify-center"
-                      />
-                      <div class="flex flex-col pl-2">
-                        <p class="text-sm text-[var(--primary)]">
-                          {{ current_user.fullName() }}
-                        </p>
-                        <p class="text-[var(--muted-foreground)] text-xs">
-                          {{ current_user.email }}
-                        </p>
-                      </div>
+                      <p class="text-gray-600 mt-4">Loading...</p>
                     </div>
-                    <div
-                      class="absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-[var(--card)] z-10 hidden"
-                      id="menu"
-                    >
-                      <div class="py-1">
-                        <a
-                          href="{{ url_for('user.profile') }}"
-                          class="block px-4 py-2 text-sm text-[var(--primary-text)] hover:bg-[var(--muted)]"
-                        >
-                          Profile
-                        </a>
-                        <a
-                          href="{{ url_for('user.logout') }}"
-                          class="block px-4 py-2 text-sm text-[var(--primary-text)] hover:bg-[var(--muted)]"
-                        >
-                          Logout
-                        </a>
+                    <div class="hidden" id="loading-names">
+                      <div
+                        class="flex flex-row justify-center items-center p-4 cursor-pointer"
+                        id="dropdown"
+                      >
+                        <img
+                          src="{{ current_user.getImage() }}"
+                          alt=""
+                          class="size-8 border border-[var(--border)] rounded-full justify-center"
+                        />
+                        <div class="flex flex-col pl-2">
+                          <p class="text-sm text-[var(--primary)]">
+                            {{ current_user.fullName() }}
+                          </p>
+                          <p class="text-[var(--muted-foreground)] text-xs">
+                            {{ current_user.email }}
+                          </p>
+                        </div>
+                      </div>
+                      <div
+                        class="absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-[var(--card)] z-10 hidden"
+                        id="menu"
+                      >
+                        <div class="py-1">
+                          <a
+                            href="{{ url_for('user.profile') }}"
+                            class="block px-4 py-2 text-sm text-[var(--primary-text)] hover:bg-[var(--muted)]"
+                          >
+                            Profile
+                          </a>
+                          <a
+                            href="{{ url_for('user.logout') }}"
+                            class="block px-4 py-2 text-sm text-[var(--primary-text)] hover:bg-[var(--muted)]"
+                          >
+                            Logout
+                          </a>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -157,6 +164,17 @@
   window.addEventListener("click", (e) => {
     if (!element.contains(e.target) && !menu.contains(e.target)) {
       menu.classList.add("hidden");
+    }
+  });
+
+  window.addEventListener("load", () => {
+    const loader = document.getElementById("loading-overlay-names");
+    const names = document.getElementById("loading-names");
+
+    if (loader && names) {
+      loader.style.display = "none";
+      names.classList.remove("hidden");
+      loader.classList.add("hidden");
     }
   });
 </script>
