@@ -1,4 +1,5 @@
 from database import DataBase
+from DataBaseConnection import DataBaseConnection
 from faker import Faker
 from werkzeug.security import generate_password_hash
 import random
@@ -69,7 +70,7 @@ def create_events(n=15):
         event_id_counter += 1
 
 
-def register_users_to_events(num_registrations=80):
+def register_users_to_events(num_registrations=200):
     for _ in range(num_registrations):
         user = random.choice(users)
         event = random.choice(events)
@@ -87,16 +88,28 @@ def register_users_to_events(num_registrations=80):
 
 def export_to_sql_file():
     for u in users:
-        DataBase(User).createIfNotExists(User(None, u['firstName'], u['lastName'], u['email'], u['password']))
+        user_model = User(
+            None, u["firstName"], u["lastName"], u["email"], u["password"]
+        )
+        created_user = DataBase(User).createIfNotExists(user_model)
+        u["db_id"] = created_user.id
 
     for e in events:
-        DataBase(Event).createIfNotExists(Event(None, e['user_id'], e['name'], e['description'], e['date'], e['location']))
+        db_user_id = next(u["db_id"] for u in users if u["id"] == e["user_id"])
+        event_model = Event(
+            None, db_user_id, e["name"], e["description"], e["date"], e["location"]
+        )
+        created_event = DataBase(Event).createIfNotExists(event_model)
+        e["db_id"] = created_event.id  # lagre faktisk event-ID også
 
-    # for r in registrations:
-    #     f.write(
-    #         f"INSERT INTO event_has_user (user_id, event_id) "
-    #         f"VALUES ({r['user_id']}, {r['event_id']});\n"
-    #     )
+    with DataBaseConnection() as db:
+        for r in registrations:
+            db_user_id = next(u["db_id"] for u in users if u["id"] == r["user_id"])
+            db_event_id = next(e["db_id"] for e in events if e["id"] == r["event_id"])
+            db.cursor.execute(
+                "INSERT INTO event_has_user (user_id, event_id) VALUES (%s, %s)",
+                (db_user_id, db_event_id),
+            )
 
     print(f"\n✅ Data generated successfully!")
 

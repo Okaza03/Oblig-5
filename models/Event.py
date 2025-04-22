@@ -1,9 +1,8 @@
-
-
 from flask import url_for
 from database import DataBase
 
-class Event():
+
+class Event:
     table = "event"
     col_count = 7
     fillable = ["user_id", "name", "description", "date", "location", "image"]
@@ -20,11 +19,17 @@ class Event():
 
     def manager(self):
         from models.User import User
+
         return DataBase(User).firstWhere("id", self.user_id)
 
     def users(self):
         from models.User import User
+
         return DataBase(User).hasMany(self, "event_has_user", "event_id", "user_id")
 
     def getImage(self):
-        return url_for("static", filename=f"uploads/{self.image}") if self.image else f"https://picsum.photos/300/100?random={self.id}"
+        return (
+            url_for("static", filename=f"uploads/{self.image}")
+            if self.image
+            else url_for("static", filename=f"default-image.png")
+        )

@@ -80,10 +80,13 @@ class DataBase(DataBaseConnection):
         return [self._loadWithLogic(r) for r in data] if data else None
 
     def createIfNotExists(self, model):
-        if self.model.unique and self.firstWhere(
-                self.model.unique, getattr(model, self.model.unique)
-        ):
-            return None
+        existing = None
+        if self.model.unique:
+            existing = self.firstWhere(self.model.unique, getattr(model, self.model.unique))
+
+        if existing:
+            # Returner eksisterende modell med riktig ID
+            return existing
         else:
             with DataBaseConnection() as db:
                 vals = [getattr(model, a) for a in self.model.fillable]
@@ -93,13 +96,14 @@ class DataBase(DataBaseConnection):
                     f"INSERT INTO {self.model.table} ({cols}) VALUES ({placeholders})", vals
                 )
                 setattr(model, "id", db.cursor.lastrowid)
-        return model
+            return model
+
 
     def update(self, model):
         if self.model.unique and self.firstWhere(
-                self.model.unique,
-                getattr(model, self.model.unique),
-                additional=(f"AND id != %s", model.id),
+            self.model.unique,
+            getattr(model, self.model.unique),
+            additional=(f"AND id != %s", model.id),
         ):
             return None
         else:
@@ -110,6 +114,7 @@ class DataBase(DataBaseConnection):
                 sql = f"UPDATE {self.model.table} SET {update} WHERE id = %s"
                 db.cursor.execute(sql, vals + [model.id])
         return True
+
 
     def hasMany(self, model, mtm, m_col, f_col):
         with DataBaseConnection() as db:

@@ -1,47 +1,194 @@
 {% extends "base.html" %} {% block content %}
-<h1>Event List</h1>
-<ul>
-  <li>
-    <img src="{{ event.getImage() }}" />
-    <strong>{{ event.name }}</strong><br />
-    {{ event.description }}<br />
-    {{ event.date }} — {{ event.location }}
+<div class="min-h-screen flex justify-center px-4 py-8">
+  <div class="w-full max-w-5xl">
+    <div class="flex flex-col lg:flex-row gap-8 shadow-2xl rounded-lg p-8">
+      <!-- Event Image -->
+      <div class="flex-shrink-0">
+        <img
+          src="{{ event.getImage() }}"
+          alt="{{ event.name }}"
+          class="rounded-lg w-full max-w-sm object-cover shadow"
+        />
+      </div>
 
-    <div class="flex flex-col mt-3 gap-3">
-      Event manager
-      <div class="flex items-center gap-4">
-        <img class="rounded-full w-10 h-10" src="{{ manager.getImage() }}" />
-        {{ manager.fullName() }}
+      <!-- Event Info -->
+      <div class="flex flex-col justify-between w-full">
+        <div>
+          <h1 class="text-3xl font-bold mb-2">{{ event.name }}</h1>
+          <p class="mb-4">{{ event.description }}</p>
+          <p class="text-sm">{{ event.date }} &mdash; {{ event.location }}</p>
+
+          <!-- Event Manager -->
+          <div class="mt-6">
+            <h2 class="text-lg font-semibold mb-2">Event Manager</h2>
+            <div class="flex items-center gap-4">
+              <img
+                class="rounded-full w-10 h-10 object-cover"
+                src="{{ manager.getImage() }}"
+                alt="{{ manager.fullName() }}"
+              />
+              <span>{{ manager.fullName() }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-row gap-4">
+          <form
+            action="{{ url_for('events.info', event_id=event.id) }}"
+            method="POST"
+            class="mt-6"
+            autocomplete="off"
+          >
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            {% if attending %}
+            <input type="hidden" name="action" value="remove" />
+            <button
+              type="submit"
+              class="bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded shadow"
+            >
+              Remove Attendance
+            </button>
+            {% else %}
+            <input type="hidden" name="action" value="add" />
+            <button
+              type="submit"
+              class="bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-2 rounded shadow"
+            >
+              Attend this Event
+            </button>
+            {% endif %}
+          </form>
+          {% if current_user.id == event.user_id %}
+          <button
+            onclick="document.getElementById('edit-modal').classList.remove('hidden')"
+            class="mt-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded shadow"
+          >
+            Edit Event
+          </button>
+          {% endif %}
+
+          <div
+            id="edit-modal"
+            class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+          >
+            <div
+              class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative"
+            >
+              <!-- Close button -->
+              <button
+                onclick="document.getElementById('edit-modal').classList.add('hidden')"
+                class="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl"
+              >
+                &times;
+              </button>
+
+              <h2 class="text-xl font-bold mb-4">Edit Event</h2>
+
+              <form
+                action="{{ url_for('events.edit_event', event_id=event.id) }}"
+                method="POST"
+                enctype="multipart/form-data"
+                autocomplete="off"
+                class="flex flex-col gap-4"
+              >
+                <input
+                  type="hidden"
+                  name="csrf_token"
+                  value="{{ csrf_token() }}"
+                />
+
+                <label class="flex flex-col">
+                  Name:
+                  <input
+                    type="text"
+                    name="name"
+                    value="{{ event.name }}"
+                    class="border border-gray-300 rounded px-3 py-2"
+                  />
+                </label>
+
+                <label class="flex flex-col">
+                  Description:
+                  <textarea
+                    name="description"
+                    rows="3"
+                    class="border border-gray-300 rounded px-3 py-2"
+                  >
+{{ event.description }}</textarea
+                  >
+                </label>
+
+                <label class="flex flex-col">
+                  Date & Time:
+                  <input
+                    type="datetime-local"
+                    name="date"
+                    value="{{ event.date|replace(' ', 'T') }}"
+                    class="border border-gray-300 rounded px-3 py-2"
+                  />
+                </label>
+
+                <label class="flex flex-col">
+                  Location:
+                  <input
+                    type="text"
+                    name="location"
+                    value="{{ event.location }}"
+                    class="border border-gray-300 rounded px-3 py-2"
+                  />
+                </label>
+
+                <label class="flex flex-col">
+                  Image:
+                  <input
+                    type="file"
+                    name="image"
+                    class="border border-gray-300 rounded px-3 py-2"
+                  />
+                </label>
+
+                <div class="mt-4 flex justify-end gap-2">
+                  <button
+                    type="button"
+                    onclick="document.getElementById('edit-modal').classList.add('hidden')"
+                    class="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    class="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <form
-      action="{{ url_for('events.info', event_id=event.id) }}"
-      method="POST"
-      class="mt-5"
-      autocomplete="off"
-    >
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-      {% if attending %}
-      <input type="hidden" name="action" value="remove" />
-      <button type="submit" class="bg-green-500 text-black p-3 rounded">
-        Remove attending
-      </button>
-      {% else %}
-      <input type="hidden" name="action" value="add" />
-      <button type="submit" class="bg-green-500 text-black p-3 rounded">
-        Attend this event
-      </button>
-      {% endif %}
-    </form>
-  </li>
-</ul>
-
-{% if users %}
-<div class="mt-10">People attending</div>
-{% for user in users%}
-<div class="flex mt-4 gap-4 items-center">
-  <img class="rounded-full w-10 h-10" src="{{ user.getImage() }}" />
-  <span>{{ user.fullName() }}</span>
-  <div>{% endfor%} {% endif %} {% endblock %}</div>
+    <!-- Attendees -->
+    {% if users %}
+    <div class="mt-12">
+      <h2 class="text-2xl font-bold mb-4 text-center">People Attending</h2>
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+      >
+        {% for user in users %}
+        <div class="flex items-center gap-3 p-3 bg-white rounded shadow">
+          <img
+            class="rounded-full w-10 h-10 object-cover"
+            src="{{ user.getImage() }}"
+            alt="{{ user.fullName() }}"
+          />
+          <span class="text-gray-800">{{ user.fullName() }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
 </div>
+{% endblock %}

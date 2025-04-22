@@ -11,8 +11,8 @@
       <div class="space-y-2">
         <h2 class="text-xl font-bold">Filter</h2>
       </div>
-      <form action="{{url_for('home')}}" method='POST' autocomplete="off">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <form action="{{url_for('home')}}" method="POST" autocomplete="off">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
         <div class="flex flex-row">
           <input
             type="text"
@@ -53,7 +53,7 @@
           id="loading-overlay-events"
         >
           <div
-              class="fixed flex flex-col items-center justify-center z-50 text-center"
+            class="fixed flex flex-col items-center justify-center z-50 text-center"
           >
             <div class="text-6xl animate-bounce">...</div>
             <p class="text-gray-600 mt-4">Loading...</p>
@@ -65,13 +65,11 @@
           <div
             class="rounded-xl border border-[var(--border)] shadow overflow-hidden max-h-fit"
           >
-            <div>
-              <img
-                src="{{ event.getImage() }}"
-                alt="event {{ event.id }}"
-                class="size-full object-contain"
-              />
-            </div>
+            <img
+              src="{{ event.getImage() }}"
+              alt="event {{ event.id }}"
+              class="size-full object-fill max-h-40"
+            />
 
             <a href="{{ url_for('events.info', event_id=event.id) }}">
               <div
@@ -114,11 +112,19 @@
   window.addEventListener("load", () => {
     const loader = document.getElementById("loading-overlay-events");
     const events = document.getElementById("loading-events");
+    const noEventsMessage = document.getElementById("no-events-message");
 
-    if (loader && events) {
+    if (loader) {
       loader.style.display = "none";
-      events.classList.remove("hidden");
       loader.classList.add("hidden");
+    }
+
+    if (events) {
+      events.classList.remove("hidden");
+    }
+
+    if (noEventsMessage && events.children.length === 0) {
+      noEventsMessage.classList.remove("hidden");
     }
   });
 </script>

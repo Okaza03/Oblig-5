@@ -128,3 +128,62 @@ def send_confirmation_email(user_email, event_name):
 
     except Exception as e:
         print("Error:", e)
+
+
+@event_bp.route("/event/<int:event_id>/edit", methods=["POST"])
+@login_required
+def edit_event(event_id):
+    db = DataBase(Event)
+    event = db.firstWhere("id", event_id)
+
+    # Ensure current user is owner of the event
+    if not event or event.user_id != current_user.id:
+        return redirect(url_for("events.info", event_id=event_id))
+
+    # Collect form data
+    name = request.form["name"]
+    description = request.form["description"]
+    date = request.form["date"]
+    location = request.form["location"]
+    image = request.files.get("image")
+
+    errors = []
+    custom_filename = event.image  # keep existing image by default
+
+    # Handle optional image upload
+    if image:
+        if image.filename != "":
+            if image and allowed_file(image.filename):
+                filename = secure_filename(image.filename)
+                name_part, ext = os.path.splitext(filename)
+                custom_filename = f"event_{event.id}{ext}"
+
+                image.save(os.path.join(app.config["UPLOAD_FOLDER"], custom_filename))
+
+    # Construct updated event object
+    updated_event = Event(
+        id=event.id,
+        user_id=current_user.id,
+        name=name,
+        description=description,
+        date=date,
+        location=location,
+        image=custom_filename,
+    )
+
+    if not db.update(updated_event):
+        errors.append("Event with that name already exists.")
+
+    return (
+        redirect(url_for("events.info", event_id=event.id))
+        if not errors
+        else render_template(
+            "event/info.html",
+            event=event,
+            manager=event.manager(),
+            users=event.users(),
+            attending=True,
+            errors=errors,
+            title=f"{event.name} Info",
+        )
+    )
