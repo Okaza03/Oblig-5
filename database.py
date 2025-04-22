@@ -30,7 +30,7 @@ class DataBase(DataBaseConnection):
 
     def firstWhere(self, col: str, val: str, additional=None):
         with DataBaseConnection() as db:
-            
+
             sql = self._buildQuery(
                 f"SELECT * FROM {self.model.table}",
                 f"WHERE {col} = %s",
@@ -39,11 +39,10 @@ class DataBase(DataBaseConnection):
             if additional:
                 ad_q, ad_val = additional
                 sql += f"{ad_q}"
-                db.cursor.execute(sql, (val,ad_val))
+                db.cursor.execute(sql, (val, ad_val))
             else:
                 db.cursor.execute(sql, (val,))
-                
-                
+
             data = db.cursor.fetchone()
 
         return self._loadWithLogic(data) if data else None
@@ -54,7 +53,7 @@ class DataBase(DataBaseConnection):
                 f"SELECT * FROM {self.model.table}", f"WHERE {col} = %s"
             )
 
-            db.cursor.execute(sql, (val, ))
+            db.cursor.execute(sql, (val,))
             data = db.cursor.fetchall()
 
         return [self._loadWithLogic(r) for r in data] if data else None
@@ -82,7 +81,9 @@ class DataBase(DataBaseConnection):
     def createIfNotExists(self, model):
         existing = None
         if self.model.unique:
-            existing = self.firstWhere(self.model.unique, getattr(model, self.model.unique))
+            existing = self.firstWhere(
+                self.model.unique, getattr(model, self.model.unique)
+            )
 
         if existing:
             # Returner eksisterende modell med riktig ID
@@ -93,11 +94,11 @@ class DataBase(DataBaseConnection):
                 cols = ",".join(self.model.fillable)
                 placeholders = ",".join(["%s"] * len(vals))
                 db.cursor.execute(
-                    f"INSERT INTO {self.model.table} ({cols}) VALUES ({placeholders})", vals
+                    f"INSERT INTO {self.model.table} ({cols}) VALUES ({placeholders})",
+                    vals,
                 )
                 setattr(model, "id", db.cursor.lastrowid)
             return model
-
 
     def update(self, model):
         if self.model.unique and self.firstWhere(
@@ -115,7 +116,6 @@ class DataBase(DataBaseConnection):
                 db.cursor.execute(sql, vals + [model.id])
         return True
 
-
     def hasMany(self, model, mtm, m_col, f_col):
         with DataBaseConnection() as db:
             sql = f"""SELECT {self.model.table}.* 
@@ -128,7 +128,6 @@ class DataBase(DataBaseConnection):
             db.cursor.execute(sql, (model.id,))
             data = db.cursor.fetchall()
         return [self._loadWithLogic(r) for r in data] if data else None
-
 
     def insert_relation(self, model, mtm, m_col, f_col):
         with DataBaseConnection() as db:
