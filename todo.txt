@@ -1,8 +1,10 @@
 NEED TO FIX:
 
+# = COMPLETED
 
-CSRF
-SQL-injection
-XSS (cross site scripting)
+#CSRF
+#SQL-injection
+#XSS (cross site scripting)
 
-++
+date range filters front page
+

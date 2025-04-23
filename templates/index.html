@@ -11,8 +11,7 @@
       <div class="space-y-2">
         <h2 class="text-xl font-bold">Filter</h2>
       </div>
-      <form action="{{url_for('home')}}" method="POST" autocomplete="off">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+      <form action="{{url_for('home')}}" method="GET" autocomplete="off">
         <div class="flex flex-row">
           <input
             type="text"
