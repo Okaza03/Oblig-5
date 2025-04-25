@@ -7,12 +7,12 @@ Utforsk publiserte eventer, meld deg på det som interesserer deg, eller opprett
 
 ## Funksjoner
 
-- Bla gjennom tilgjengelige arrangementer
-- Opprett, rediger og slett egne eventer
-- Se hvem som deltar
-- Meld deg på eller fjern påmelding til eventer
-- Innlogging og brukerautentisering
-- Last opp bilder til dine arrangementer
+- Bla gjennom tilgjengelige arrangementer  
+- Opprett, rediger og slett egne eventer  
+- Se hvem som deltar  
+- Meld deg på eller fjern påmelding til eventer  
+- Innlogging og brukerautentisering  
+- Last opp bilder til dine arrangementer  
 
 ---
 
@@ -54,17 +54,25 @@ python app.py
 Åpne lenken som vises i terminalen – vanligvis `http://127.0.0.1:5000/`.
 
 ---
+![Kommando-demo](https://media.discordapp.net/attachments/1328364820038160384/1365325426573971488/eventhub_cmd_demo.gif?ex=680ce5e4&is=680b9464&hm=ac49296942ac9bffe8245998ec7de3bc7389e6a6d0cb0d8f4dc1a678a7688799&=)
 
 ## Teknologier brukt
 
-| Teknologi   | Beskrivelse                    |
-| ----------- | ------------------------------ |
-| Python      | Backend-språk                  |
-| Flask       | Mikro-nettrammeverk for Python |
-| MySQL       | Relasjonsdatabase              |
-| TailwindCSS | Moderne CSS-rammeverk          |
-| Faker       | Bibliotek for falske testdata  |
-| Flask-WTF   | Skjemaer og CSRF-beskyttelse   |
+| Teknologi   | Beskrivelse                          |
+|-------------|--------------------------------------|
+| Python      | Backend-språk                        |
+| Flask       | Mikro-nettrammeverk for Python       |
+| MySQL       | Relasjonsdatabase                    |
+| TailwindCSS | Moderne CSS-rammeverk                |
+| Faker       | Bibliotek for falske testdata        |
+| Flask-WTF   | Skjemaer og CSRF-beskyttelse         |
+
+---
+
+## Bidra
+
+Pull requests er hjertelig velkommen!  
+Dersom du finner feil eller har forslag til forbedringer, opprett gjerne en issue eller kontakt prosjektansvarlig.
 
 ---
 
