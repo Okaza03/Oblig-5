@@ -12,7 +12,6 @@ class DataBase(DataBaseConnection):
     def _buildQuery(self, select_query, where_query=""):
         sql_a = ""
         if self.load_with:
-            self.foreign_model, self.foreign_col, self.foreign_key = self.load_with
             sql_a = f"LEFT JOIN {self.foreign_model.table} as {self.foreign_model.table}_data ON {self.foreign_model.table}_data.{self.foreign_col} = {self.foreign_key}"
 
         return f"{select_query} {sql_a} {where_query}"
@@ -23,7 +22,7 @@ class DataBase(DataBaseConnection):
             setattr(
                 model,
                 self.foreign_model.table,
-                self.foreign_model(*row[self.foreign_model.col_count + 1 :]),
+                self.foreign_model(*row[self.foreign_model.col_count:]),
             )
 
         return model
