@@ -1,15 +1,33 @@
 # Eventhub
 
-Eventhub er en nettside for arrangementer av alle typer. 
-Se gjennom alt som er publisert, meld deg på det som interesserer deg, eller lag ditt eget arrangement.
+**Eventhub** er en nettside for arrangementer – enten du vil delta eller arrangere selv.  
+Utforsk publiserte eventer, meld deg på det som interesserer deg, eller opprett ditt eget!
 
+---
 
-## Guide for å starte å bruke nettsiden:
+## Kom i gang
 
-1.  Lag en .env fil ved å kopiere innholdet i .env.example og fylle inn egen info.
-2.  Kjør scriptet create.sql inne i MySQL Workbench for å få opprettet databasen.
-3.  Kjør scriptet fake_integrated.py for å fylle tabellene med tilfeldig generert informasjon.
-4.  Kjør scriptet app.py og følg linken som dukker opp i terminalen.
+Følg stegene under for å sette opp prosjektet lokalt:
 
-```python
-import blalbalb
+1. **Opprett miljøfil**  
+   Lag en `.env`-fil ved å kopiere `.env.example`, og fyll inn din egen informasjon.
+
+2. **Opprett databasen**  
+   Åpne `create.sql` i MySQL Workbench og kjør scriptet for å opprette databasen.
+
+3. **Generer testdata**  
+   Kjør `fake_integrated.py` for å fylle tabellene med tilfeldig generert testdata.
+
+   ```python
+   python fake_integrated.py
+
+   ```
+
+4. **Start applikasjonen**  
+   Kjør `app.py`, og åpne lenken som vises i terminalen for å bruke nettsiden.
+
+   ```python
+   python app.py
+   ```
+
+---
