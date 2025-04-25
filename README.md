@@ -74,4 +74,4 @@ Dette prosjektet er lisensiert under [MIT-lisensen](https://opensource.org/licen
 
 ---
 
-Laget av [@Okaza03](https://github.com/Okaza03) [@Havard03](https://github.com/Havard03) [@Pybruh](https://github.com/Pybruh)
+Laget av [@Okaza03](https://github.com/Okaza03), [@Havard03](https://github.com/Havard03) og [@Pybruh](https://github.com/Pybruh)
