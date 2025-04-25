@@ -50,7 +50,9 @@ def create_event():
 
         if not created_event:
             return render_template(
-                "event/create-event.html", error="Something went wrong"
+                "event/create-event.html",
+                error="Something went wrong",
+                title="Something went wrong",
             )
 
         if image:
@@ -121,7 +123,7 @@ def send_confirmation_email(user_email, event_name):
         sender="eventhub_management@gmail.com",
         recipients=[user_email],
     )
-    msg.html = render_template("emails/confirmation.html", event_name=event_name)
+    msg.html = render_template("emails/confirmation.html", event_name=event_name, title="Confirmation Email")
 
     try:
         mail.send(msg)

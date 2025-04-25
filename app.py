@@ -18,7 +18,7 @@ def load_user(user_id):
 # Handlers
 @app.errorhandler(404)
 def notFound(e):
-    return render_template("404.html")
+    return render_template("404.html", title="Error 404")
 
 
 # Routes

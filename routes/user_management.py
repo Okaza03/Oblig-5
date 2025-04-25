@@ -174,7 +174,9 @@ def change_password(token):
         flash("Your password has been changed successfully.", "password")
         return redirect(url_for("user.profile"))
 
-    return render_template("user/change-password.html", token=token)
+    return render_template(
+        "user/change-password.html", token=token, title="Change Password"
+    )
 
 
 @user_bp.route("/logout")
