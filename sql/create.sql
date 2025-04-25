@@ -53,7 +53,8 @@ CREATE TABLE IF NOT EXISTS `eventhub`.`event` (
   INDEX `user_id_idx` (`user_id` ASC) VISIBLE,
   CONSTRAINT `event_user_id`
     FOREIGN KEY (`user_id`)
-    REFERENCES `eventhub`.`user` (`id`))
+    REFERENCES `eventhub`.`user` (`id`)
+    ON DELETE CASCADE )
 ENGINE = InnoDB
 AUTO_INCREMENT = 35
 DEFAULT CHARACTER SET = utf8mb4

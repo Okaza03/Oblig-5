@@ -64,11 +64,13 @@
           <div
             class="rounded-xl border border-[var(--border)] shadow overflow-hidden max-h-fit"
           >
-            <img
-              src="{{ event.getImage() }}"
-              alt="event {{ event.id }}"
-              class="size-full object-fill max-h-40"
-            />
+            <div class="flex-shrink">
+              <img
+                src="{{ event.getImage() }}"
+                alt="{{ event.name }}"
+                class="rounded-lg w-full max-w-sm object-cover shadow"
+              />
+            </div>
 
             <a href="{{ url_for('events.info', event_id=event.id) }}">
               <div
@@ -90,7 +92,7 @@
                       {{ event.location }}
                     </p>
                     <p class="text-xs text-[var(--muted-foreground)]">
-                      {{ event.user.fullName() }}
+                      {{ event.user.id }}
                     </p>
                   </div>
                 </div>

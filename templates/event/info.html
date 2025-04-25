@@ -3,7 +3,7 @@
   <div class="w-full max-w-5xl">
     <div class="flex flex-col lg:flex-row gap-8 shadow-2xl rounded-lg p-8">
       <!-- Event Image -->
-      <div class="flex-shrink-0">
+      <div class="flex-shrink overflow-hidden">
         <img
           src="{{ event.getImage() }}"
           alt="{{ event.name }}"
@@ -32,11 +32,11 @@
           </div>
         </div>
 
-        <div class="flex flex-row gap-4">
+        <!-- Actions -->
+        <div class="flex flex-row gap-4 mt-6">
           <form
             action="{{ url_for('events.info', event_id=event.id) }}"
             method="POST"
-            class="mt-6"
             autocomplete="off"
           >
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
@@ -58,142 +58,156 @@
             </button>
             {% endif %}
           </form>
+
           {% if current_user.id == event.user_id %}
-          <button
-            onclick="document.getElementById('edit-modal').classList.remove('hidden')"
-            class="mt-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded shadow"
-          >
-            Edit Event
-          </button>
-          <button
-            class="mt-6 bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded shadow"
-          >
-            Remove Event
-          </button>
-          {% endif %}
-
-          <div
-            id="edit-modal"
-            class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
-          >
-            <div
-              class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative"
+          <div class="flex flex-wrap gap-4">
+            <button
+              onclick="document.getElementById('edit-modal').classList.remove('hidden')"
+              class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded shadow"
             >
-              <!-- Close button -->
+              Edit Event
+            </button>
+
+            <form
+              action="{{ url_for('events.delete', event_id=event.id) }}"
+              method="POST"
+              autocomplete="off"
+            >
+              <input
+                type="hidden"
+                name="csrf_token"
+                value="{{ csrf_token() }}"
+              />
               <button
-                onclick="document.getElementById('edit-modal').classList.add('hidden')"
-                class="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl"
+                class="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded shadow"
               >
-                &times;
+                Remove Event
               </button>
-
-              <h2 class="text-xl font-bold mb-4">Edit Event</h2>
-
-              <form
-                action="{{ url_for('events.edit_event', event_id=event.id) }}"
-                method="POST"
-                enctype="multipart/form-data"
-                autocomplete="off"
-                class="flex flex-col gap-4"
-              >
-                <input
-                  type="hidden"
-                  name="csrf_token"
-                  value="{{ csrf_token() }}"
-                />
-
-                <label class="flex flex-col">
-                  Name:
-                  <input
-                    type="text"
-                    name="name"
-                    value="{{ event.name }}"
-                    class="border border-gray-300 rounded px-3 py-2"
-                  />
-                </label>
-
-                <label class="flex flex-col">
-                  Description:
-                  <textarea
-                    name="description"
-                    rows="3"
-                    class="border border-gray-300 rounded px-3 py-2"
-                  >
-{{ event.description }}</textarea
-                  >
-                </label>
-
-                <label class="flex flex-col">
-                  Date & Time:
-                  <input
-                    type="datetime-local"
-                    name="date"
-                    value="{{ event.date|replace(' ', 'T') }}"
-                    class="border border-gray-300 rounded px-3 py-2"
-                  />
-                </label>
-
-                <label class="flex flex-col">
-                  Location:
-                  <input
-                    type="text"
-                    name="location"
-                    value="{{ event.location }}"
-                    class="border border-gray-300 rounded px-3 py-2"
-                  />
-                </label>
-
-                <label class="flex flex-col">
-                  Image:
-                  <input
-                    type="file"
-                    name="image"
-                    class="border border-gray-300 rounded px-3 py-2"
-                  />
-                </label>
-
-                <div class="mt-4 flex justify-end gap-2">
-                  <button
-                    type="button"
-                    onclick="document.getElementById('edit-modal').classList.add('hidden')"
-                    class="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    class="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
-                  >
-                    Save Changes
-                  </button>
-                </div>
-              </form>
-            </div>
+            </form>
           </div>
+          {% endif %}
         </div>
       </div>
     </div>
 
     <!-- Attendees -->
     {% if users %}
-    <div class="mt-12">
+    <div class="mt-12 flex justify-center items-center flex-col w-full">
       <h2 class="text-2xl font-bold mb-4 text-center">People Attending</h2>
       <div
         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
       >
         {% for user in users %}
-        <div class="flex items-center gap-3 p-3 bg-white rounded shadow">
+        <div
+          class="flex items-center gap-3 p-3 bg-[var(--background)] rounded shadow-xl"
+        >
           <img
             class="rounded-full w-10 h-10 object-cover"
             src="{{ user.getImage() }}"
             alt="{{ user.fullName() }}"
           />
-          <span class="text-gray-800">{{ user.fullName() }}</span>
+          <span>{{ user.fullName() }}</span>
         </div>
         {% endfor %}
       </div>
     </div>
     {% endif %}
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div
+  id="edit-modal"
+  class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+>
+  <div
+    class="bg-[var(--background)] rounded-lg shadow-lg w-full max-w-lg p-6 relative"
+  >
+    <!-- Close button -->
+    <button
+      onclick="document.getElementById('edit-modal').classList.add('hidden')"
+      class="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl"
+    >
+      &times;
+    </button>
+
+    <h2 class="text-xl font-bold mb-4">Edit Event</h2>
+
+    <form
+      action="{{ url_for('events.edit_event', event_id=event.id) }}"
+      method="POST"
+      enctype="multipart/form-data"
+      autocomplete="off"
+      class="flex flex-col gap-4"
+    >
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+      <label class="flex flex-col">
+        Name:
+        <input
+          type="text"
+          name="name"
+          value="{{ event.name }}"
+          class="border border-[var(--border)] rounded px-3 py-2 bg-[var(--background)]"
+        />
+      </label>
+
+      <label class="flex flex-col">
+        Description:
+        <textarea
+          name="description"
+          rows="3"
+          class="border border-[var(--border)] rounded px-3 py-2 bg-[var(--background)] resize-none"
+        >
+{{ event.description }}</textarea
+        >
+      </label>
+
+      <label class="flex flex-col">
+        Date & Time:
+        <input
+          type="datetime-local"
+          name="date"
+          value="{{ event.date|replace(' ', 'T') }}"
+          class="border border-[var(--border)] rounded px-3 py-2 bg-[var(--background)]"
+        />
+      </label>
+
+      <label class="flex flex-col">
+        Location:
+        <input
+          type="text"
+          name="location"
+          value="{{ event.location }}"
+          class="border border-[var(--border)] rounded px-3 py-2 bg-[var(--background)]"
+        />
+      </label>
+
+      <label class="flex flex-col">
+        Image:
+        <input
+          type="file"
+          name="image"
+          class="border border-[var(--border)] rounded px-3 py-2 bg-[var(--background)]"
+        />
+      </label>
+
+      <div class="mt-4 flex justify-end gap-2">
+        <button
+          type="button"
+          onclick="document.getElementById('edit-modal').classList.add('hidden')"
+          class="px-4 py-2 rounded bg-[var(--light-button)] hover:bg-[var(--light-button-hover)] text-black"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+        >
+          Save Changes
+        </button>
+      </div>
+    </form>
   </div>
 </div>
 {% endblock %}

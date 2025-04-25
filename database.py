@@ -116,6 +116,12 @@ class DataBase(DataBaseConnection):
                 db.cursor.execute(sql, vals + [model.id])
         return True
 
+    def delete(self, model):
+        with DataBaseConnection() as db:
+            sql = f"DELETE FROM {self.model.table} WHERE id = %s"
+            db.cursor.execute(sql, (model.id,))
+        return True
+
     def hasMany(self, model, mtm, m_col, f_col):
         with DataBaseConnection() as db:
             sql = f"""SELECT {self.model.table}.* 

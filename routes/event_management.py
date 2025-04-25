@@ -111,7 +111,7 @@ def info(event_id):
         manager=current_event.manager(),
         users=users,
         attending=attending,
-        title=f"{current_event.name} Info"
+        title=f"{current_event.name} Info",
     )
 
 
@@ -128,6 +128,19 @@ def send_confirmation_email(user_email, event_name):
 
     except Exception as e:
         print("Error:", e)
+
+
+@event_bp.route("/event/<int:event_id>/delete", methods=["POST"])
+@login_required
+def delete(event_id):
+    db = DataBase(Event)
+    event = db.firstWhere("id", event_id)
+
+    if not event or event.user_id != current_user.id:
+        return redirect(url_for("events.delete", event_id=event_id))
+
+    db.delete(event)
+    return redirect(url_for("events.my_events"))
 
 
 @event_bp.route("/event/<int:event_id>/edit", methods=["POST"])
