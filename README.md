@@ -7,12 +7,12 @@ Utforsk publiserte eventer, meld deg på det som interesserer deg, eller opprett
 
 ## Funksjoner
 
-- Bla gjennom tilgjengelige arrangementer  
-- Opprett, rediger og slett egne eventer  
-- Se hvem som deltar  
-- Meld deg på eller fjern påmelding til eventer  
-- Innlogging og brukerautentisering  
-- Last opp bilder til dine arrangementer  
+- Bla gjennom tilgjengelige arrangementer
+- Opprett, rediger og slett egne eventer
+- Se hvem som deltar
+- Meld deg på eller fjern påmelding til eventer
+- Innlogging og brukerautentisering
+- Last opp bilder til dine arrangementer
 
 ---
 
@@ -57,21 +57,14 @@ python app.py
 
 ## Teknologier brukt
 
-| Teknologi   | Beskrivelse                          |
-|-------------|--------------------------------------|
-| Python      | Backend-språk                        |
-| Flask       | Mikro-nettrammeverk for Python       |
-| MySQL       | Relasjonsdatabase                    |
-| TailwindCSS | Moderne CSS-rammeverk                |
-| Faker       | Bibliotek for falske testdata        |
-| Flask-WTF   | Skjemaer og CSRF-beskyttelse         |
-
----
-
-## Bidra
-
-Pull requests er hjertelig velkommen!  
-Dersom du finner feil eller har forslag til forbedringer, opprett gjerne en issue eller kontakt prosjektansvarlig.
+| Teknologi   | Beskrivelse                    |
+| ----------- | ------------------------------ |
+| Python      | Backend-språk                  |
+| Flask       | Mikro-nettrammeverk for Python |
+| MySQL       | Relasjonsdatabase              |
+| TailwindCSS | Moderne CSS-rammeverk          |
+| Faker       | Bibliotek for falske testdata  |
+| Flask-WTF   | Skjemaer og CSRF-beskyttelse   |
 
 ---
 
@@ -81,4 +74,4 @@ Dette prosjektet er lisensiert under [MIT-lisensen](https://opensource.org/licen
 
 ---
 
-Laget med ❤️ av [@Okaza03](https://github.com/Okaza03) [@Havard03](https://github.com/Havard03) [@Pybruh](https://github.com/Pybruh)
+Laget av [@Okaza03](https://github.com/Okaza03) [@Havard03](https://github.com/Havard03) [@Pybruh](https://github.com/Pybruh)
