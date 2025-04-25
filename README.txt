@@ -10,3 +10,6 @@ Se gjennom alt som er publisert, meld deg på det som interesserer deg, eller la
 2.  Kjør scriptet create.sql inne i MySQL Workbench for å få opprettet databasen.
 3.  Kjør scriptet fake_integrated.py for å fylle tabellene med tilfeldig generert informasjon.
 4.  Kjør scriptet app.py og følg linken som dukker opp i terminalen.
+
+```python
+import blalbalb
