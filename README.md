@@ -10,8 +10,8 @@ Utforsk publiserte eventer, meld deg på det som interesserer deg, eller opprett
 Følg stegene under for å sette opp prosjektet lokalt:
 
 1. **Clone Github Repository**
-  Bruk denne kommandoen for å klone filene.
-  
+   Bruk denne kommandoen for å klone filene.
+
    ```cmd
    https://github.com/Okaza03/Oblig-5.git
 
